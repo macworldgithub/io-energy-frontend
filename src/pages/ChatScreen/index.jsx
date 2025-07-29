@@ -7,10 +7,10 @@ import axios from "axios";
 import "./ChatWidget.css";
 
 export default function ChatWidget() {
-  const widgetId = "pakken-hamazda"; // Hardcoded widgetId
+  const widgetId = "ths";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hi there! I’m your AI-powered assistant, ready to help you find the perfect Mazda or Used Car. I can even book a service whenever you need, just let me know how I can assist!", sender: "bot", showButtons: false },
+    { text: "Hello! How can I assist you?", sender: "bot", showButtons: false },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,6 @@ export default function ChatWidget() {
 
   return (
     <div className="ai-chat-widget-wrapper">
-      {/* Modern Blue Button */}
       {!isOpen && (
         <div className="chat-button-container" onClick={handleOpenChat}>
           <button className="chat-button">
@@ -102,7 +101,6 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* Chat Popup */}
       {isOpen && (
         <div className="chat-popup">
           <div className="chat-popup-header">
@@ -111,16 +109,6 @@ export default function ChatWidget() {
               className="chat-popup-close"
               onClick={() => setIsOpen(false)}
             />
-          </div>
-          <div className="chat-popup-service">
-            <a
-              href="https://www.pakenhammazda.com.au/service/book-a-service"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="service-button"
-            >
-              Book a Service
-            </a>
           </div>
           <div className="chat-popup-messages">
             {messages.map((msg, index) => (

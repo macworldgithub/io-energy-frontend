@@ -18,17 +18,13 @@
 }
 
 @keyframes slideIn {
-  0% {
-    transform: translateY(-50%) translateX(100%);
-  }
-  100% {
-    transform: translateY(-50%) translateX(0);
-  }
+  0% { transform: translateY(-50%) translateX(100%); }
+  100% { transform: translateY(-50%) translateX(0); }
 }
 
 /* Chat Button */
 .chat-button {
-  background: #003087;
+  background: #C8102E;
   border: none;
   border-radius: 8px 0 0 8px;
   padding: 12px 16px;
@@ -37,7 +33,7 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   height: 48px;
   width: auto;
@@ -47,9 +43,9 @@
 }
 
 .chat-button:hover {
-  background: #C8102E;
+  background: #00AEEF;
   transform: translateX(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .chat-button:active {
@@ -70,7 +66,7 @@
 .chat-button-text {
   color: #FFFFFF;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.3px;
   white-space: nowrap;
 }
@@ -83,18 +79,14 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transform: rotate(45deg);
   animation: shine 3s infinite;
 }
 
 @keyframes shine {
-  0% {
-    transform: translateX(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) rotate(45deg);
-  }
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
 }
 
 /* Chat Popup */
@@ -103,17 +95,16 @@
   bottom: 20px;
   right: 20px;
   width: 360px;
-  height: 420px; /* Adjusted height to accommodate service button */
-  background: #FFFFFF;
+  height: 420px;
+  background: #000000;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   z-index: 10000;
 }
 
-/* Responsive Popup */
 @media (max-width: 768px) {
   .chat-popup {
     width: 90%;
@@ -140,38 +131,15 @@
 
 /* Chat Header */
 .chat-popup-header {
-  background: #003087;
+  background: #C8102E;
   color: #FFFFFF;
-  font-weight: 500;
+  font-weight: 700;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
   height: 40px;
-}
-
-/* Service Button */
-.chat-popup-service {
-  padding: 8px 16px;
-  background: #F5F5F5;
-  flex-shrink: 0;
-}
-
-.service-button {
-  display: inline-block;
-  background: #C8102E;
-  color: #FFFFFF;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.3s ease;
-}
-
-.service-button:hover {
-  background: #A00D26;
 }
 
 /* Close Icon */
@@ -186,7 +154,7 @@
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  background-color: #F5F5F5;
+  background-color: #1A1A1A;
   scroll-behavior: smooth;
 }
 
@@ -194,25 +162,25 @@
 .chat-popup-input {
   display: flex;
   padding: 10px;
-  border-top: 1px solid #E0E0E0;
-  background: #FFFFFF;
+  border-top: 1px solid #333333;
+  background: #000000;
   flex-shrink: 0;
 }
 
 /* Send Button */
 .custom-send-button {
-  background: #003087;
+  background: #00AEEF;
   border: none;
   color: #FFFFFF;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   margin-left: 8px;
 }
 
 .custom-send-button:hover {
   background: #C8102E;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
 }
 
@@ -252,16 +220,16 @@
 }
 
 .bot-message {
-  background: #E0E0E0;
-  color: #333333;
+  background: #333333;
+  color: #FFFFFF;
 }
 
 .user-message {
-  background: #003087;
+  background: #00AEEF;
   color: #FFFFFF;
-  font-weight: 500;
+  font-weight: 700;
   margin-left: auto;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Loading Spinner */
@@ -271,5 +239,5 @@
   gap: 8px;
   padding: 10px;
   font-size: 13px;
-  color: #666666;
+  color: #CCCCCC;
 }
