@@ -130,7 +130,7 @@ export default function ChatWidget() {
             {loading && (
               <div className="loading-message">
                 <Spin size="small" />
-                <span>Searching Inventory...</span>
+                <span>Searching...</span>
               </div>
             )}
             <div ref={messagesEndRef} />

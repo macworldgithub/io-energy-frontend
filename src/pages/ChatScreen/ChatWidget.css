@@ -8,18 +8,39 @@
 /* Chat Button Container */
 .chat-button-container {
   position: fixed;
-  bottom: 20px; /* Moved to bottom */
-  right: 20px; /* Adjusted right position */
-  transform: translateY(0); /* Removed vertical translate */
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translateX(100%);
   transition: all 0.3s ease;
   animation: slideIn 0.5s ease-out forwards;
   animation-delay: 1s;
   z-index: 9999;
 }
 
-@keyframes slideIn {
-  0% { transform: translateY(100%); } /* Slide up from bottom */
-  100% { transform: translateY(0); }
+@media (min-width: 769px) {
+  .chat-button-container {
+    top: 66%; /* Approximately bottom third, between middle and bottom */
+    right: 20px;
+    transform: translateY(-50%) translateX(100%);
+  }
+
+  @keyframes slideIn {
+    0% { transform: translateY(-50%) translateX(100%); }
+    100% { transform: translateY(-50%) translateX(0); }
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-button-container {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%) translateX(100%);
+  }
+
+  @keyframes slideIn {
+    0% { transform: translateY(-50%) translateX(100%); }
+    100% { transform: translateY(-50%) translateX(0); }
+  }
 }
 
 /* Chat Button */
