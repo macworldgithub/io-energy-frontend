@@ -49,12 +49,11 @@ export default function ChatWidget() {
   };
 
   function parseLinks(text) {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" style="color: #C8102E; text-decoration: underline;">${url}</a>`;
-    });
-  }
-
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" style="color: rgb(237, 0, 141); text-decoration: underline;">${url}</a>`;
+  });
+}
   const handleSend = async () => {
     if (input.trim() === "") return;
 

@@ -19,7 +19,7 @@
 
 @media (min-width: 769px) {
   .chat-button-container {
-    top: 66%; /* Approximately bottom third, between middle and bottom */
+    top: 66%;
     right: 20px;
     transform: translateY(-50%) translateX(100%);
   }
@@ -45,7 +45,7 @@
 
 /* Chat Button */
 .chat-button {
-  background: #C8102E;
+  background: rgb(237, 0, 141);
   border: none;
   border-radius: 8px 0 0 8px;
   padding: 12px 16px;
@@ -152,7 +152,7 @@
 
 /* Chat Header */
 .chat-popup-header {
-  background: #C8102E;
+  background: rgb(237, 0, 141);
   color: #FFFFFF;
   font-weight: 700;
   padding: 12px 16px;
@@ -200,7 +200,7 @@
 }
 
 .custom-send-button:hover {
-  background: #C8102E;
+  background: rgb(237, 0, 141);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
 }
