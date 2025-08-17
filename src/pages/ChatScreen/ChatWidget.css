@@ -19,7 +19,7 @@
 
 @media (min-width: 769px) {
   .chat-button-container {
-    top: 40%; /* Adjusted to position slightly above center on laptops */
+    top: 40%; /* Positioned slightly above center on laptops */
     right: 20px;
     transform: translateY(-50%) translateX(100%);
   }
@@ -299,6 +299,9 @@
 
   .ant-picker-panel {
     width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .ant-picker-content {
@@ -310,8 +313,24 @@
     padding: 2px !important;
   }
 
+  .ant-picker-time-panel {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+  }
+
   .ant-picker-time-panel-column {
-    width: 33% !important;
+    width: 80px !important;
     font-size: 12px !important;
+    overflow-y: auto !important;
+    max-height: 150px !important;
+    margin: 0 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .ant-picker-time-panel-column > li {
+    padding: 4px 0 !important;
+    text-align: center !important;
   }
 }
