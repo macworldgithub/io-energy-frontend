@@ -313,43 +313,32 @@
     padding: 2px !important;
   }
 
-  .ant-picker-time-panel {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    overflow-x: auto !important;
-    padding: 0 4px !important;
-    min-height: 150px !important; /* Ensure enough height for visibility */
+  /* 📱 Mobile-friendly Time Picker Fix */
+  .ant-picker-dropdown .ant-picker-time-panel {
+    flex-direction: column !important; /* stack columns vertically */
+    align-items: stretch !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: hidden !important;
+    padding: 8px 0 !important;
   }
 
-  .ant-picker-time-panel-column {
-    width: 48px !important; /* Narrower columns to fit all (hours, minutes, seconds) */
-    font-size: 11px !important;
+  .ant-picker-dropdown .ant-picker-time-panel-column {
+    width: 100% !important;   /* full width for easier tapping */
+    max-height: 120px !important;
     overflow-y: auto !important;
-    max-height: 140px !important;
-    margin: 0 2px !important;
-    flex-shrink: 0 !important;
-    display: block !important; /* Ensure columns are visible */
-  }
-
-  .ant-picker-time-panel-column > li {
-    padding: 3px 0 !important;
+    font-size: 14px !important;
+    border-bottom: 1px solid #444 !important;
+    margin: 0 !important;
     text-align: center !important;
-    min-width: 100% !important; /* Ensure items take full column width */
-    line-height: 20px !important; /* Improve readability */
   }
 
-  /* Explicitly ensure all time columns (hours, minutes, seconds) are visible */
-  .ant-picker-time-panel-column:nth-child(1),
-  .ant-picker-time-panel-column:nth-child(2),
-  .ant-picker-time-panel-column:nth-child(3) {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+  .ant-picker-dropdown .ant-picker-time-panel-column:last-child {
+    border-bottom: none !important;
   }
 
-  /* Ensure the time panel wrapper is scrollable if needed */
-  .ant-picker-time-panel {
-    -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on mobile */
+  .ant-picker-dropdown .ant-picker-time-panel-column > li {
+    padding: 8px 0 !important;
+    line-height: 22px !important;
   }
 }
