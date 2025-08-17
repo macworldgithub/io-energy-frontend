@@ -20,7 +20,7 @@
 
 @media (min-width: 769px) {
   .chat-button-container {
-    top: 40%; /* Positioned slightly above center on laptops */
+    top: 40%;
     right: 20px;
     transform: translateY(-50%) translateX(100%);
   }
@@ -362,11 +362,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
-  max-width: 80%;
+  padding: 10px;
+  background: #1A1A1A;
+  border-top: 1px solid #333333;
 }
 
-/* Suggestion Button */
 .suggestion-button {
   background: #333333 !important;
   color: #FFFFFF !important;

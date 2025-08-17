@@ -249,12 +249,13 @@ export default function ChatWidget() {
   const widgetId = "ths";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false, suggestions: [] },
+    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [showAppointmentPicker, setShowAppointmentPicker] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
   const [isMobile, setIsMobile] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -310,10 +311,11 @@ export default function ChatWidget() {
   const handleSend = async () => {
     if (input.trim() === "") return;
 
-    const newMessages = [...messages, { text: input, sender: "user", showButtons: false, suggestions: [] }];
+    const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
+    setSuggestions([]); // Clear suggestions before sending
 
     const requestBody = { query: input };
     if (sessionId) requestBody.session_id = sessionId;
@@ -326,17 +328,18 @@ export default function ChatWidget() {
         showButtons:
           response.data.message.toLowerCase().includes("preferred day") ||
           response.data.message.toLowerCase().includes("preferred time"),
-        suggestions: response.data.suggestions || [],
       };
       setMessages([...newMessages, newMessage]);
       setSessionId(response.data.session_id);
       setShowAppointmentPicker(newMessage.showButtons);
+      setSuggestions(response.data.suggestions || []); // Set new suggestions
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setMessages([
         ...newMessages,
-        { text: "Sorry, something went wrong. Please try again.", sender: "bot", showButtons: false, suggestions: [] },
+        { text: "Sorry, something went wrong. Please try again.", sender: "bot", showButtons: false },
       ]);
+      setSuggestions([]);
     } finally {
       setLoading(false);
     }
@@ -346,8 +349,9 @@ export default function ChatWidget() {
     if (!sessionId || !dateObj) {
       setMessages([
         ...messages,
-        { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false, suggestions: [] },
+        { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false },
       ]);
+      setSuggestions([]);
       return;
     }
 
@@ -361,11 +365,13 @@ export default function ChatWidget() {
         preferred_day: preferredDay,
         preferred_time: preferredTime,
       });
-      setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false, suggestions: [] }]);
+      setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false }]);
       setShowAppointmentPicker(false);
+      setSuggestions([]);
     } catch (error) {
       const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
-      setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false, suggestions: [] }]);
+      setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false }]);
+      setSuggestions([]);
     } finally {
       setLoading(false);
     }
@@ -379,7 +385,8 @@ export default function ChatWidget() {
       });
       handleBookAppointment(combined);
     } else {
-      setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false, suggestions: [] }]);
+      setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false }]);
+      setSuggestions([]);
     }
   };
 
@@ -411,20 +418,6 @@ export default function ChatWidget() {
                   className={msg.sender === "user" ? "user-message" : "bot-message"}
                   dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
                 />
-                {msg.sender === "bot" && msg.suggestions && msg.suggestions.length > 0 && (
-                  <div className="suggestions-container">
-                    {msg.suggestions.map((sug, sugIndex) => (
-                      <Button
-                        key={sugIndex}
-                        className="suggestion-button"
-                        onClick={() => handleSuggestionClick(sug)}
-                        disabled={loading || showAppointmentPicker}
-                      >
-                        {sug}
-                      </Button>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
 
@@ -470,6 +463,21 @@ export default function ChatWidget() {
             )}
             <div ref={messagesEndRef} />
           </div>
+
+          {suggestions.length > 0 && !loading && !showAppointmentPicker && (
+            <div className="suggestions-container">
+              {suggestions.map((sug, sugIndex) => (
+                <Button
+                  key={sugIndex}
+                  className="suggestion-button"
+                  onClick={() => handleSuggestionClick(sug)}
+                  disabled={loading || showAppointmentPicker}
+                >
+                  {sug}
+                </Button>
+              ))}
+            </div>
+          )}
 
           <div className="chat-popup-input">
             <Input
