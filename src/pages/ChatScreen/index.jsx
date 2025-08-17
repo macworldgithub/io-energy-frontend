@@ -208,11 +208,12 @@ export default function ChatWidget() {
   };
 
   function parseLinks(text) {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, (url) => {
-    return `<a href="${url}" target="_blank" style="color: rgb(237, 0, 141); text-decoration: underline;">${url}</a>`;
-  });
-}
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, (url) => {
+      return `<a href="${url}" target="_blank" style="color: rgb(237, 0, 141); text-decoration: underline;">${url}</a>`;
+    });
+  }
+
   const handleSend = async () => {
     if (input.trim() === "") return;
 
@@ -240,7 +241,7 @@ export default function ChatWidget() {
         setShowAppointmentPicker(false);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setMessages([
         ...newMessages,
         {
@@ -355,7 +356,7 @@ export default function ChatWidget() {
             {loading && (
               <div className="loading-message">
                 <Spin size="small" />
-                <span>Searching...</span>
+                <span>Thinking...</span>
               </div>
             )}
             <div ref={messagesEndRef} />

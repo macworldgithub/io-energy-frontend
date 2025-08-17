@@ -19,7 +19,7 @@
 
 @media (min-width: 769px) {
   .chat-button-container {
-    top: 66%;
+    top: 40%; /* Adjusted to position slightly above center on laptops */
     right: 20px;
     transform: translateY(-50%) translateX(100%);
   }
@@ -278,4 +278,40 @@
 
 .custom-date-picker {
   z-index: 10001 !important;
+  width: 100% !important;
+  max-width: 300px !important;
+}
+
+@media (max-width: 768px) {
+  .custom-date-picker {
+    width: 90vw !important;
+    max-width: 90% !important;
+    left: 5% !important;
+    right: 5% !important;
+    transform: translateX(0) !important;
+  }
+
+  .ant-picker-panel-container {
+    width: 100% !important;
+    max-width: 90vw !important;
+    margin: 0 auto !important;
+  }
+
+  .ant-picker-panel {
+    width: 100% !important;
+  }
+
+  .ant-picker-content {
+    width: 100% !important;
+    font-size: 12px !important;
+  }
+
+  .ant-picker-cell {
+    padding: 2px !important;
+  }
+
+  .ant-picker-time-panel-column {
+    width: 33% !important;
+    font-size: 12px !important;
+  }
 }
