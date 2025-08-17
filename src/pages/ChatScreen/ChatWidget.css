@@ -263,45 +263,87 @@
   color: #CCCCCC;
 }
 
-/* Date Picker */
+/* Date Picker Container */
 .date-picker-container {
   background: #333333;
   padding: 10px 14px;
   border-radius: 8px;
-  max-width: 80%;
+  width: 100%; /* Match the full width of the chat-popup-messages */
+  margin: 0; /* Remove any margins to align with the left edge */
+  box-sizing: border-box; /* Ensure padding is included in width */
 }
 
-.ant-picker {
-  width: 100%;
-  max-width: 250px;
-}
-
+/* Custom DatePicker Popup */
 .custom-date-picker {
   z-index: 10001 !important;
-  width: 100% !important;
-  max-width: 300px !important;
+  width: 360px !important; /* Match chat-popup width on desktop */
+  left: 0 !important; /* Align with the left edge of the chat box */
+  right: auto !important; /* Ensure no right alignment interference */
+  transform: none !important; /* Remove any transform offsets */
 }
 
+/* Ensure internal DatePicker content fits */
+.ant-picker-panel-container {
+  width: 100% !important;
+  max-width: 360px !important; /* Match chat-popup width */
+  margin: 0 !important;
+}
+
+.ant-picker-panel {
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Ensure content stretches to full width */
+}
+
+.ant-picker-content {
+  width: 100% !important;
+  font-size: 14px !important; /* Consistent font size */
+}
+
+.ant-picker-cell {
+  padding: 4px !important; /* Slightly larger padding for readability */
+}
+
+.ant-picker-time-panel {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  overflow-x: auto !important;
+}
+
+.ant-picker-time-panel-column {
+  width: 80px !important;
+  font-size: 12px !important;
+  overflow-y: auto !important;
+  max-height: 150px !important;
+  margin: 0 2px !important;
+  flex-shrink: 0 !important;
+}
+
+.ant-picker-time-panel-column > li {
+  padding: 4px 0 !important;
+  text-align: center !important;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 768px) {
   .custom-date-picker {
-    width: 90vw !important;
-    max-width: 90% !important;
-    left: 5% !important;
-    right: 5% !important;
-    transform: translateX(0) !important;
+    width: 90% !important; /* Match chat-popup width on mobile */
+    max-width: none !important; /* Remove max-width constraints */
+    left: 0 !important; /* Align with the left edge of the chat box */
+    right: auto !important;
+    transform: none !important;
   }
 
   .ant-picker-panel-container {
     width: 100% !important;
-    max-width: 90vw !important;
-    margin: 0 auto !important;
+    max-width: 90% !important; /* Match chat-popup width */
+    margin: 0 !important;
   }
 
   .ant-picker-panel {
     width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   .ant-picker-content {
@@ -313,24 +355,8 @@
     padding: 2px !important;
   }
 
-  .ant-picker-time-panel {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    overflow-x: auto !important;
-  }
-
   .ant-picker-time-panel-column {
-    width: 80px !important;
-    font-size: 12px !important;
-    overflow-y: auto !important;
-    max-height: 150px !important;
-    margin: 0 2px !important;
-    flex-shrink: 0 !important;
-  }
-
-  .ant-picker-time-panel-column > li {
-    padding: 4px 0 !important;
-    text-align: center !important;
+    width: 70px !important; /* Slightly smaller for mobile */
+    font-size: 11px !important;
   }
 }
