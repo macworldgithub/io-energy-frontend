@@ -262,3 +262,20 @@
   font-size: 13px;
   color: #CCCCCC;
 }
+
+/* Date Picker */
+.date-picker-container {
+  background: #333333;
+  padding: 10px 14px;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+.ant-picker {
+  width: 100%;
+  max-width: 250px;
+}
+
+.custom-date-picker {
+  z-index: 10001 !important;
+}
