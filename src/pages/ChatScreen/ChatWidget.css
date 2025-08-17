@@ -305,7 +305,6 @@
     width: 100% !important;
     max-width: 90vw !important;
     margin: 0 auto !important;
-    overflow: hidden !important;
   }
 
   .ant-picker-panel {
@@ -321,45 +320,38 @@
   }
 
   .ant-picker-cell {
-    padding: 4px !important;
-    font-size: 12px !important;
+    padding: 2px !important;
   }
 
   .ant-picker-time-panel {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
-    align-items: center !important;
     overflow-x: auto !important;
-    padding: 4px 0 !important;
   }
 
   .ant-picker-time-panel-column {
-    width: 70px !important;
+    width: 80px !important;
     font-size: 12px !important;
     overflow-y: auto !important;
-    max-height: 160px !important;
-    margin: 0 4px !important;
+    max-height: 150px !important;
+    margin: 0 2px !important;
     flex-shrink: 0 !important;
-    border-right: 1px solid #e8e8e8 !important;
-  }
-
-  .ant-picker-time-panel-column:last-child {
-    border-right: none !important;
   }
 
   .ant-picker-time-panel-column > li {
-    padding: 6px 0 !important;
+    padding: 4px 0 !important;
     text-align: center !important;
-    cursor: pointer !important;
   }
+}
 
-  .ant-picker-time-panel-column > li.ant-picker-time-panel-cell-selected {
-    background: #00AEEF !important;
-    color: #FFFFFF !important;
-  }
+/* Mobile specific date + time picker layout */
+.mobile-date-time-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .ant-picker-time-panel-column > li:hover {
-    background: #f0f0f0 !important;
-  }
+.mobile-date-time-picker .ant-picker {
+  width: 100% !important;
 }
