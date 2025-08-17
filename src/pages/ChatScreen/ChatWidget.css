@@ -1,3 +1,4 @@
+/* CSS: ChatWidget.css */
 /* Chat Widget Wrapper */
 .ai-chat-widget-wrapper {
   position: fixed;
@@ -354,4 +355,35 @@
 
 .mobile-date-time-picker .ant-picker {
   width: 100% !important;
+}
+
+/* Suggestions Container */
+.suggestions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  max-width: 80%;
+}
+
+/* Suggestion Button */
+.suggestion-button {
+  background: #333333 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 16px !important;
+  padding: 4px 12px !important;
+  font-size: 12px !important;
+  height: auto !important;
+  transition: all 0.3s ease !important;
+}
+
+.suggestion-button:hover {
+  background: #00AEEF !important;
+  transform: translateY(-1px) !important;
+}
+
+.suggestion-button:disabled {
+  background: #555555 !important;
+  cursor: not-allowed !important;
 }

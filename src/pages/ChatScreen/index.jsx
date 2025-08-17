@@ -1,5 +1,6 @@
+
 // import { useState, useRef, useEffect } from "react";
-// import { Button, Input, Spin } from "antd";
+// import { Button, Input, Spin, DatePicker, TimePicker } from "antd";
 // import { SendOutlined, CloseOutlined } from "@ant-design/icons";
 // import { SERVER_URL } from "../../config";
 // import image from "../../../public/pic.jpeg";
@@ -10,32 +11,41 @@
 //   const widgetId = "ths";
 //   const [isOpen, setIsOpen] = useState(false);
 //   const [messages, setMessages] = useState([
-//     { text: "Hello! How can I assist you?", sender: "bot", showButtons: false },
+//     { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
 //   ]);
 //   const [input, setInput] = useState("");
 //   const [loading, setLoading] = useState(false);
+//   const [sessionId, setSessionId] = useState(null);
+//   const [showAppointmentPicker, setShowAppointmentPicker] = useState(false);
+
+//   const [isMobile, setIsMobile] = useState(false);
+//   const [selectedDate, setSelectedDate] = useState(null);
+//   const [selectedTime, setSelectedTime] = useState(null);
+
 //   const messagesEndRef = useRef(null);
 
 //   useEffect(() => {
 //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//   }, [messages, loading]);
+
+//     // detect mobile
+//     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+//     checkMobile();
+//     window.addEventListener("resize", checkMobile);
+//     return () => window.removeEventListener("resize", checkMobile);
+//   }, [messages, loading, showAppointmentPicker]);
 
 //   const handleOpenChat = async () => {
 //     setIsOpen(true);
-//     window.parent.postMessage(
-//       {
-//         event: 'iframeButtonClick',
-//       },
-//       '*'
-//     );
-//     let userIP = '';
+//     window.parent.postMessage({ event: "iframeButtonClick" }, "*");
+
+//     let userIP = "";
 //     try {
-//       const ipRes = await axios.get('https://api64.ipify.org?format=json');
+//       const ipRes = await axios.get("https://api64.ipify.org?format=json");
 //       userIP = ipRes.data.ip;
-//       console.log(userIP);
 //     } catch (e) {
-//       console.error('IP fetch failed', e);
+//       console.error("IP fetch failed", e);
 //     }
+
 //     try {
 //       await axios.post(`https://widgetsanalytics.vercel.app/api/track-visitor`, {
 //         event: "chat_opened",
@@ -49,41 +59,84 @@
 //   };
 
 //   function parseLinks(text) {
-//   const urlRegex = /(https?:\/\/[^\s]+)/g;
-//   return text.replace(urlRegex, (url) => {
-//     return `<a href="${url}" target="_blank" style="color: rgb(237, 0, 141); text-decoration: underline;">${url}</a>`;
-//   });
-// }
+//     const urlRegex = /(https?:\/\/[^\s]+)/g;
+//     return text.replace(urlRegex, (url) => {
+//       return `<a href="${url}" target="_blank" style="color: rgb(237, 0, 141); text-decoration: underline;">${url}</a>`;
+//     });
+//   }
+
 //   const handleSend = async () => {
 //     if (input.trim() === "") return;
 
-//     const newMessages = [...messages, { text: input, sender: "user" }];
+//     const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
 //     setMessages(newMessages);
 //     setInput("");
 //     setLoading(true);
 
+//     const requestBody = { query: input };
+//     if (sessionId) requestBody.session_id = sessionId;
+
 //     try {
-//       const response = await axios.post(`${SERVER_URL}/query`, {
-//         query: input,
-//       });
-//       setMessages([
-//         ...newMessages,
-//         {
-//           text: response.data.message,
-//           sender: "bot",
-//           showButtons: response.data.vehicleDetails ? true : false,
-//         },
-//       ]);
+//       const response = await axios.post(`${SERVER_URL}/query`, requestBody);
+//       const newMessage = {
+//         text: response.data.message,
+//         sender: "bot",
+//         showButtons:
+//           response.data.message.toLowerCase().includes("preferred day") ||
+//           response.data.message.toLowerCase().includes("preferred time"),
+//       };
+//       setMessages([...newMessages, newMessage]);
+//       setSessionId(response.data.session_id);
+//       setShowAppointmentPicker(newMessage.showButtons);
 //     } catch (error) {
+//       console.log(error)
 //       setMessages([
 //         ...newMessages,
-//         {
-//           text: "Sorry, something went wrong. Please try again.",
-//           sender: "bot",
-//         },
+//         { text: "Sorry, something went wrong. Please try again.", sender: "bot", showButtons: false },
 //       ]);
 //     } finally {
 //       setLoading(false);
+//     }
+//   };
+
+//   const handleBookAppointment = async (dateObj) => {
+//     if (!sessionId || !dateObj) {
+//       setMessages([
+//         ...messages,
+//         { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false },
+//       ]);
+//       return;
+//     }
+
+//     setLoading(true);
+//     const preferredDay = dateObj.format("YYYY-MM-DD");
+//     const preferredTime = dateObj.format("HH:mm");
+
+//     try {
+//       const response = await axios.post(`${SERVER_URL}/book_appointment`, {
+//         session_id: sessionId,
+//         preferred_day: preferredDay,
+//         preferred_time: preferredTime,
+//       });
+//       setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false }]);
+//       setShowAppointmentPicker(false);
+//     } catch (error) {
+//       const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
+//       setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false }]);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleMobileConfirm = () => {
+//     if (selectedDate && selectedTime) {
+//       const combined = selectedDate.clone().set({
+//         hour: selectedTime.hour(),
+//         minute: selectedTime.minute(),
+//       });
+//       handleBookAppointment(combined);
+//     } else {
+//       setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false }]);
 //     }
 //   };
 
@@ -104,32 +157,58 @@
 //         <div className="chat-popup">
 //           <div className="chat-popup-header">
 //             <span>Live Chat</span>
-//             <CloseOutlined
-//               className="chat-popup-close"
-//               onClick={() => setIsOpen(false)}
-//             />
+//             <CloseOutlined className="chat-popup-close" onClick={() => setIsOpen(false)} />
 //           </div>
+
 //           <div className="chat-popup-messages">
 //             {messages.map((msg, index) => (
 //               <div key={index} className="message-wrapper">
-//                 {msg.sender !== "user" && (
-//                   <img
-//                     className="bot-avatar"
-//                     src={image}
-//                     alt="Bot Avatar"
-//                   />
-//                 )}
+//                 {msg.sender !== "user" && <img className="bot-avatar" src={image} alt="Bot Avatar" />}
 //                 <div
 //                   className={msg.sender === "user" ? "user-message" : "bot-message"}
 //                   dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
-//                 ></div>
+//                 />
 //               </div>
 //             ))}
+
+//             {showAppointmentPicker && (
+//               <div className="message-wrapper">
+//                 <div className="bot-message date-picker-container">
+//                   {!isMobile ? (
+//                     <DatePicker
+//                       showTime
+//                       format="YYYY-MM-DD HH:mm"
+//                       placeholder="Select date and time"
+//                       onOk={handleBookAppointment}
+//                       popupClassName="custom-date-picker"
+//                     />
+//                   ) : (
+//                     <div className="mobile-date-time-picker">
+//                       <DatePicker
+//                         format="YYYY-MM-DD"
+//                         placeholder="Select date"
+//                         onChange={(date) => setSelectedDate(date)}
+//                         popupClassName="custom-date-picker"
+//                       />
+//                       <TimePicker
+//                         format="HH:mm"
+//                         placeholder="Select time"
+//                         onChange={(time) => setSelectedTime(time)}
+//                         popupClassName="custom-date-picker"
+//                       />
+//                       <Button type="primary" size="small" onClick={handleMobileConfirm}>
+//                         Confirm
+//                       </Button>
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+//             )}
 
 //             {loading && (
 //               <div className="loading-message">
 //                 <Spin size="small" />
-//                 <span>Searching...</span>
+//                 <span>Thinking...</span>
 //               </div>
 //             )}
 //             <div ref={messagesEndRef} />
@@ -141,13 +220,14 @@
 //               value={input}
 //               onChange={(e) => setInput(e.target.value)}
 //               onPressEnter={handleSend}
+//               disabled={loading || showAppointmentPicker}
 //             />
 //             <Button
 //               shape="circle"
 //               icon={<SendOutlined />}
 //               className="custom-send-button"
 //               onClick={handleSend}
-//               disabled={loading}
+//               disabled={loading || showAppointmentPicker}
 //             />
 //           </div>
 //         </div>
@@ -155,6 +235,8 @@
 //     </div>
 //   );
 // }
+
+// Frontend: ChatWidget.jsx
 import { useState, useRef, useEffect } from "react";
 import { Button, Input, Spin, DatePicker, TimePicker } from "antd";
 import { SendOutlined, CloseOutlined } from "@ant-design/icons";
@@ -167,7 +249,7 @@ export default function ChatWidget() {
   const widgetId = "ths";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
+    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false, suggestions: [] },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -221,10 +303,14 @@ export default function ChatWidget() {
     });
   }
 
+  const handleSuggestionClick = (suggestion) => {
+    setInput(suggestion);
+  };
+
   const handleSend = async () => {
     if (input.trim() === "") return;
 
-    const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
+    const newMessages = [...messages, { text: input, sender: "user", showButtons: false, suggestions: [] }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
@@ -240,6 +326,7 @@ export default function ChatWidget() {
         showButtons:
           response.data.message.toLowerCase().includes("preferred day") ||
           response.data.message.toLowerCase().includes("preferred time"),
+        suggestions: response.data.suggestions || [],
       };
       setMessages([...newMessages, newMessage]);
       setSessionId(response.data.session_id);
@@ -248,7 +335,7 @@ export default function ChatWidget() {
       console.log(error)
       setMessages([
         ...newMessages,
-        { text: "Sorry, something went wrong. Please try again.", sender: "bot", showButtons: false },
+        { text: "Sorry, something went wrong. Please try again.", sender: "bot", showButtons: false, suggestions: [] },
       ]);
     } finally {
       setLoading(false);
@@ -259,7 +346,7 @@ export default function ChatWidget() {
     if (!sessionId || !dateObj) {
       setMessages([
         ...messages,
-        { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false },
+        { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false, suggestions: [] },
       ]);
       return;
     }
@@ -274,11 +361,11 @@ export default function ChatWidget() {
         preferred_day: preferredDay,
         preferred_time: preferredTime,
       });
-      setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false }]);
+      setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false, suggestions: [] }]);
       setShowAppointmentPicker(false);
     } catch (error) {
       const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
-      setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false }]);
+      setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false, suggestions: [] }]);
     } finally {
       setLoading(false);
     }
@@ -292,7 +379,7 @@ export default function ChatWidget() {
       });
       handleBookAppointment(combined);
     } else {
-      setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false }]);
+      setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false, suggestions: [] }]);
     }
   };
 
@@ -324,6 +411,20 @@ export default function ChatWidget() {
                   className={msg.sender === "user" ? "user-message" : "bot-message"}
                   dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
                 />
+                {msg.sender === "bot" && msg.suggestions && msg.suggestions.length > 0 && (
+                  <div className="suggestions-container">
+                    {msg.suggestions.map((sug, sugIndex) => (
+                      <Button
+                        key={sugIndex}
+                        className="suggestion-button"
+                        onClick={() => handleSuggestionClick(sug)}
+                        disabled={loading || showAppointmentPicker}
+                      >
+                        {sug}
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
