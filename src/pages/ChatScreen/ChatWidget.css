@@ -316,32 +316,40 @@
   .ant-picker-time-panel {
     width: 100% !important;
     display: flex !important;
-    justify-content: center !important;
+    justify-content: space-between !important;
     overflow-x: auto !important;
     padding: 0 4px !important;
+    min-height: 150px !important; /* Ensure enough height for visibility */
   }
 
   .ant-picker-time-panel-column {
-    width: 60px !important; /* Reduced width for better fit */
-    font-size: 12px !important;
+    width: 48px !important; /* Narrower columns to fit all (hours, minutes, seconds) */
+    font-size: 11px !important;
     overflow-y: auto !important;
-    max-height: 150px !important;
+    max-height: 140px !important;
     margin: 0 2px !important;
     flex-shrink: 0 !important;
     display: block !important; /* Ensure columns are visible */
   }
 
   .ant-picker-time-panel-column > li {
-    padding: 4px 0 !important;
+    padding: 3px 0 !important;
     text-align: center !important;
     min-width: 100% !important; /* Ensure items take full column width */
+    line-height: 20px !important; /* Improve readability */
   }
 
-  /* Ensure all time columns (hours, minutes, seconds) are visible */
+  /* Explicitly ensure all time columns (hours, minutes, seconds) are visible */
   .ant-picker-time-panel-column:nth-child(1),
   .ant-picker-time-panel-column:nth-child(2),
   .ant-picker-time-panel-column:nth-child(3) {
     display: block !important;
     visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Ensure the time panel wrapper is scrollable if needed */
+  .ant-picker-time-panel {
+    -webkit-overflow-scrolling: touch !important; /* Smooth scrolling on mobile */
   }
 }
