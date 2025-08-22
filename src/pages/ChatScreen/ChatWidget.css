@@ -1,8 +1,7 @@
-/* CSS: ChatWidget.css */
 /* Chat Widget Wrapper */
 .ai-chat-widget-wrapper {
   position: fixed;
-  z-index: 9999;
+  z-index: 100000; /* Increased to ensure widget is above other components */
   font-family: 'Roboto', sans-serif;
 }
 
@@ -15,7 +14,7 @@
   transition: all 0.3s ease;
   animation: slideIn 0.5s ease-out forwards;
   animation-delay: 1s;
-  z-index: 9999;
+  z-index: 100001; /* Higher than wrapper */
 }
 
 @media (min-width: 769px) {
@@ -136,7 +135,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 10000;
+  z-index: 100002; /* Highest to ensure popup is above all */
 }
 
 @media (max-width: 768px) {
@@ -290,7 +289,7 @@
 }
 
 .custom-date-picker {
-  z-index: 10001 !important;
+  z-index: 100003 !important; /* Higher than chat-popup */
 }
 
 @media (max-width: 768px) {
