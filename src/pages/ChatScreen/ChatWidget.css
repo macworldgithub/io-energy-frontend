@@ -1,24 +1,26 @@
-ai-chat-widget-wrapper {
-  position: fixed;
-  z-index: 10000000; /* Extremely high to ensure widget is above all components */
-  font-family: 'Roboto', sans-serif;
+/* CSS: ChatWidget.css */
+/* Chat Widget Wrapper */
+.ai-chat-widget-wrapper {
+    position: fixed !important;
+    z-index: 2147483647 !important; /* Max z-index in CSS */
+    font-family: 'Roboto', sans-serif;
 }
 
 /* Chat Button Container */
 .chat-button-container {
   position: fixed;
-  top: 30%; /* Shifted higher to avoid overlap with .cc-button at bottom: 96px */
+  top: 50%;
   right: 0;
   transform: translateY(-50%) translateX(100%);
   transition: all 0.3s ease;
   animation: slideIn 0.5s ease-out forwards;
   animation-delay: 1s;
-  z-index: 10000001; /* Higher than wrapper */
+  z-index: 9999;
 }
 
 @media (min-width: 769px) {
   .chat-button-container {
-    top: 20%; /* Adjusted for desktop to avoid overlap */
+    top: 40%;
     right: 20px;
     transform: translateY(-50%) translateX(100%);
   }
@@ -35,7 +37,7 @@ ai-chat-widget-wrapper {
 
 @media (max-width: 768px) {
   .chat-button-container {
-    top: 30%; /* Adjusted for mobile */
+    top: 50%;
     right: 0;
     transform: translateY(-50%) translateX(100%);
   }
@@ -123,25 +125,25 @@ ai-chat-widget-wrapper {
 
 /* Chat Popup */
 .chat-popup {
-  position: fixed;
-  bottom: 150px; /* Shifted higher to avoid .cc-button at bottom: 96px */
-  right: 20px;
-  width: 360px;
-  height: 420px;
-  background: #000000;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 10000002; /* Highest to ensure popup is above all */
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 360px !important;
+    height: 420px !important;
+    background: #000000 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    z-index: 2147483647 !important; /* Force to top of all stacking contexts */
 }
 
 @media (max-width: 768px) {
   .chat-popup {
     width: 90%;
     right: 5%;
-    bottom: 120px; /* Adjusted for mobile */
+    bottom: 15px;
     height: 70vh;
   }
 
@@ -288,7 +290,7 @@ ai-chat-widget-wrapper {
 }
 
 .custom-date-picker {
-  z-index: 10000003 !important; /* Higher than chat-popup */
+  z-index: 10001 !important;
 }
 
 @media (max-width: 768px) {
