@@ -1,25 +1,24 @@
-/* Chat Widget Wrapper */
-.ai-chat-widget-wrapper {
+ai-chat-widget-wrapper {
   position: fixed;
-  z-index: 1000000; /* Increased significantly to ensure widget is above other components */
+  z-index: 10000000; /* Extremely high to ensure widget is above all components */
   font-family: 'Roboto', sans-serif;
 }
 
 /* Chat Button Container */
 .chat-button-container {
   position: fixed;
-  top: 50%;
+  top: 30%; /* Shifted higher to avoid overlap with .cc-button at bottom: 96px */
   right: 0;
   transform: translateY(-50%) translateX(100%);
   transition: all 0.3s ease;
   animation: slideIn 0.5s ease-out forwards;
   animation-delay: 1s;
-  z-index: 1000001; /* Higher than wrapper */
+  z-index: 10000001; /* Higher than wrapper */
 }
 
 @media (min-width: 769px) {
   .chat-button-container {
-    top: 40%;
+    top: 20%; /* Adjusted for desktop to avoid overlap */
     right: 20px;
     transform: translateY(-50%) translateX(100%);
   }
@@ -36,7 +35,7 @@
 
 @media (max-width: 768px) {
   .chat-button-container {
-    top: 50%;
+    top: 30%; /* Adjusted for mobile */
     right: 0;
     transform: translateY(-50%) translateX(100%);
   }
@@ -125,7 +124,7 @@
 /* Chat Popup */
 .chat-popup {
   position: fixed;
-  bottom: 20px;
+  bottom: 150px; /* Shifted higher to avoid .cc-button at bottom: 96px */
   right: 20px;
   width: 360px;
   height: 420px;
@@ -135,14 +134,14 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 1000002; /* Highest to ensure popup is above all */
+  z-index: 10000002; /* Highest to ensure popup is above all */
 }
 
 @media (max-width: 768px) {
   .chat-popup {
     width: 90%;
     right: 5%;
-    bottom: 15px;
+    bottom: 120px; /* Adjusted for mobile */
     height: 70vh;
   }
 
@@ -289,7 +288,7 @@
 }
 
 .custom-date-picker {
-  z-index: 1000003 !important; /* Higher than chat-popup */
+  z-index: 10000003 !important; /* Higher than chat-popup */
 }
 
 @media (max-width: 768px) {

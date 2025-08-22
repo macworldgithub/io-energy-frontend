@@ -512,24 +512,29 @@ export default function ChatWidget() {
   const widgetId = "ths";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! May I have your full name?", sender: "bot", showButtons: false },
+    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [showAppointmentPicker, setShowAppointmentPicker] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-
   const [isMobile, setIsMobile] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
 
   const messagesEndRef = useRef(null);
+  const widgetRef = useRef(null); // Ref for the widget wrapper
 
   useEffect(() => {
+    // Append widget to body to ensure it renders last in DOM
+    if (widgetRef.current) {
+      document.body.appendChild(widgetRef.current);
+    }
+
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
-    // detect mobile
+    // Detect mobile
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -654,7 +659,7 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="ai-chat-widget-wrapper">
+    <div className="ai-chat-widget-wrapper" ref={widgetRef}>
       {!isOpen && (
         <div className="chat-button-container" onClick={handleOpenChat}>
           <button className="chat-button">
