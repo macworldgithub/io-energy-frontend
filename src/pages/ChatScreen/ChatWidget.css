@@ -290,7 +290,7 @@
 }
 
 .custom-date-picker {
-  z-index: 10001 !important;
+  z-index: 2147483649 !important;
 }
 
 @media (max-width: 768px) {
