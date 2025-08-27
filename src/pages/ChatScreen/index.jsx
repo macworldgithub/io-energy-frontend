@@ -309,24 +309,22 @@ export default function ChatWidget() {
   }
 
   const handleSuggestionClick = (suggestion) => {
-    setInput(suggestion);
-    handleSend(suggestion);
+    if (isInitialQuestion) {
+      setIsInitialQuestion(false); // Move past the initial question
+    }
+    setInput(suggestion); // Pre-populate the input with the suggestion
   };
 
-  const handleSend = async (overrideInput = null) => {
-    const messageToSend = overrideInput || input.trim();
-    if (!messageToSend) return;
+  const handleSend = async () => {
+    if (!input.trim()) return;
 
-    const newMessages = [...messages, { text: messageToSend, sender: "user", showButtons: false }];
+    const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
     setSuggestions([]); // Clear suggestions before sending
-    if (isInitialQuestion) {
-      setIsInitialQuestion(false); // Move past the initial question
-    }
 
-    const requestBody = { query: messageToSend };
+    const requestBody = { query: input };
     if (sessionId) requestBody.session_id = sessionId;
 
     try {
@@ -486,22 +484,24 @@ export default function ChatWidget() {
             </div>
           )}
 
-          <div className="chat-popup-input">
-            <Input
-              placeholder="Type a message..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onPressEnter={() => handleSend()}
-              disabled={loading || showAppointmentPicker || isInitialQuestion}
-            />
-            <Button
-              shape="circle"
-              icon={<SendOutlined />}
-              className="custom-send-button"
-              onClick={() => handleSend()}
-              disabled={loading || showAppointmentPicker || isInitialQuestion}
-            />
-          </div>
+          {!isInitialQuestion && !showAppointmentPicker && (
+            <div className="chat-popup-input">
+              <Input
+                placeholder="Type a message..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onPressEnter={() => handleSend()}
+                disabled={loading}
+              />
+              <Button
+                shape="circle"
+                icon={<SendOutlined />}
+                className="custom-send-button"
+                onClick={() => handleSend()}
+                disabled={loading}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
