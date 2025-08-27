@@ -140,8 +140,10 @@
 
 @media (max-width: 768px) {
   .chat-popup {
-    width: 90%;
+    width: 85%; /* Reduced from 90% to prevent overflow */
+    max-width: 300px; /* Added max-width for better control */
     left: 5%;
+    right: 5%;
     bottom: 15px;
     height: 70vh;
   }
