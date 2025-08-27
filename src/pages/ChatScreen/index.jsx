@@ -250,7 +250,7 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
-      text: "Hello, and welcome to TheHypeSociety!\n\nMy name is Charles. How can I help you today?\n\nDo you need support with any of the following?\n- Digital Marketing\n- Brand\n- Content including UGC\n- Website Design",
+      text: "Hello, and welcome to TheHypeSociety!\n\nMy name is Charles. How can I help you today?\n\nDo you need support with any of the following?",
       sender: "bot",
       showButtons: false,
     },
@@ -263,6 +263,7 @@ export default function ChatWidget() {
   const [isMobile, setIsMobile] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [isInitialQuestion, setIsInitialQuestion] = useState(true);
 
   const messagesEndRef = useRef(null);
 
@@ -321,6 +322,9 @@ export default function ChatWidget() {
     setInput("");
     setLoading(true);
     setSuggestions([]); // Clear suggestions before sending
+    if (isInitialQuestion) {
+      setIsInitialQuestion(false); // Move past the initial question
+    }
 
     const requestBody = { query: messageToSend };
     if (sessionId) requestBody.session_id = sessionId;
@@ -488,14 +492,14 @@ export default function ChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onPressEnter={() => handleSend()}
-              disabled={loading || showAppointmentPicker}
+              disabled={loading || showAppointmentPicker || isInitialQuestion}
             />
             <Button
               shape="circle"
               icon={<SendOutlined />}
               className="custom-send-button"
               onClick={() => handleSend()}
-              disabled={loading || showAppointmentPicker}
+              disabled={loading || showAppointmentPicker || isInitialQuestion}
             />
           </div>
         </div>
