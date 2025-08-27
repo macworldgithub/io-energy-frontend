@@ -249,14 +249,17 @@ export default function ChatWidget() {
   const widgetId = "ths";
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
+    {
+      text: "Hello, and welcome to TheHypeSociety!\n\nMy name is Charles. How can I help you today?\n\nDo you need support with any of the following?\n- Digital Marketing\n- Brand\n- Content including UGC\n- Website Design",
+      sender: "bot",
+      showButtons: false,
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [showAppointmentPicker, setShowAppointmentPicker] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
-
+  const [suggestions, setSuggestions] = useState(["Digital Marketing", "Brand", "Content including UGC", "Website Design"]);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -266,7 +269,7 @@ export default function ChatWidget() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
-    // detect mobile
+    // Detect mobile
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -306,18 +309,20 @@ export default function ChatWidget() {
 
   const handleSuggestionClick = (suggestion) => {
     setInput(suggestion);
+    handleSend(suggestion);
   };
 
-  const handleSend = async () => {
-    if (input.trim() === "") return;
+  const handleSend = async (overrideInput = null) => {
+    const messageToSend = overrideInput || input.trim();
+    if (!messageToSend) return;
 
-    const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
+    const newMessages = [...messages, { text: messageToSend, sender: "user", showButtons: false }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
     setSuggestions([]); // Clear suggestions before sending
 
-    const requestBody = { query: input };
+    const requestBody = { query: messageToSend };
     if (sessionId) requestBody.session_id = sessionId;
 
     try {
@@ -325,9 +330,7 @@ export default function ChatWidget() {
       const newMessage = {
         text: response.data.message,
         sender: "bot",
-        showButtons:
-          response.data.message.toLowerCase().includes("preferred day") ||
-          response.data.message.toLowerCase().includes("preferred time"),
+        showButtons: response.data.message.toLowerCase().includes("preferred day"),
       };
       setMessages([...newMessages, newMessage]);
       setSessionId(response.data.session_id);
@@ -416,7 +419,7 @@ export default function ChatWidget() {
                 {msg.sender !== "user" && <img className="bot-avatar" src={image} alt="Bot Avatar" />}
                 <div
                   className={msg.sender === "user" ? "user-message" : "bot-message"}
-                  dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
+                  dangerouslySetInnerHTML={{ __html: parseLinks(msg.text.replace(/\n/g, "<br />")) }}
                 />
               </div>
             ))}
@@ -484,14 +487,14 @@ export default function ChatWidget() {
               placeholder="Type a message..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onPressEnter={handleSend}
+              onPressEnter={() => handleSend()}
               disabled={loading || showAppointmentPicker}
             />
             <Button
               shape="circle"
               icon={<SendOutlined />}
               className="custom-send-button"
-              onClick={handleSend}
+              onClick={() => handleSend()}
               disabled={loading || showAppointmentPicker}
             />
           </div>
