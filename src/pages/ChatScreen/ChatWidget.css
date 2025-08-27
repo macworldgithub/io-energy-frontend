@@ -388,3 +388,33 @@
   background: #555555 !important;
   cursor: not-allowed !important;
 }
+
+/* Center OK and Confirm buttons on mobile */
+@media (max-width: 768px) {
+  .custom-date-picker .ant-picker-ok {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 8px 0 !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn {
+    margin: 0 auto !important;
+    background: rgb(237, 0, 141) !important; /* Pink theme */
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+  }
+
+  .mobile-date-time-picker .ant-btn-primary {
+    margin: 8px auto 0 !important; /* Center horizontally */
+    width: auto !important;
+    background: rgb(237, 0, 141) !important; /* Pink theme */
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+  }
+}
