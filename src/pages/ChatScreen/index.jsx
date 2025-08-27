@@ -250,7 +250,7 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
-      text: "Hello, and welcome to TheHypeSociety!\n\nMy name is Charles. How can I help you today?\n\nDo you need support with any of the following?",
+      text: "Hello, and welcome to TheHypeSociety!\n\nMy name is Charles. Do you need support with any of the following?",
       sender: "bot",
       showButtons: false,
     },
@@ -311,20 +311,23 @@ export default function ChatWidget() {
   const handleSuggestionClick = (suggestion) => {
     if (isInitialQuestion) {
       setIsInitialQuestion(false); // Move past the initial question
+      handleSend(suggestion); // Directly submit the suggestion
+    } else {
+      setInput(suggestion); // Pre-populate the input for subsequent questions
     }
-    setInput(suggestion); // Pre-populate the input with the suggestion
   };
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const handleSend = async (overrideInput = null) => {
+    const messageToSend = overrideInput || input.trim();
+    if (!messageToSend) return;
 
-    const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
+    const newMessages = [...messages, { text: messageToSend, sender: "user", showButtons: false }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
     setSuggestions([]); // Clear suggestions before sending
 
-    const requestBody = { query: input };
+    const requestBody = { query: messageToSend };
     if (sessionId) requestBody.session_id = sessionId;
 
     try {
