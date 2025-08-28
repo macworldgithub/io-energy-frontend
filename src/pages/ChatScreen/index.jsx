@@ -430,18 +430,31 @@ export default function ChatWidget() {
   };
 
   const handleConfirm = () => {
-    if (selectedDate && selectedTime && fullName && email && phone) {
+    if (!fullName || !email || !phone || !selectedDate) {
+      setMessages([
+        ...messages,
+        { text: "Please provide your full name, email, phone number, and select a date and time.", sender: "bot", showButtons: false },
+      ]);
+      setSuggestions([]);
+      return;
+    }
+
+    if (isMobile) {
+      if (!selectedTime) {
+        setMessages([
+          ...messages,
+          { text: "Please select a time for your appointment.", sender: "bot", showButtons: false },
+        ]);
+        setSuggestions([]);
+        return;
+      }
       const combined = selectedDate.clone().set({
         hour: selectedTime.hour(),
         minute: selectedTime.minute(),
       });
       handleBookAppointment(combined);
     } else {
-      setMessages([
-        ...messages,
-        { text: "Please provide your full name, email, phone number, and select both date and time.", sender: "bot", showButtons: false },
-      ]);
-      setSuggestions([]);
+      handleBookAppointment(selectedDate);
     }
   };
 
