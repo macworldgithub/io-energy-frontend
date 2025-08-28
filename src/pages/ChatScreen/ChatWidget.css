@@ -277,12 +277,19 @@
   color: #CCCCCC;
 }
 
-/* Date Picker */
+/* Date Picker Container */
 .date-picker-container {
   background: #E0E0E0;
   padding: 10px 14px;
   border-radius: 8px;
   max-width: 80%;
+}
+
+/* Appointment Form */
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .ant-picker {
@@ -292,6 +299,60 @@
 
 .custom-date-picker {
   z-index: 2147483649 !important;
+  background: #E0E0E0 !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+@media (min-width: 769px) {
+  .custom-date-picker .ant-picker-panel-container {
+    background: #E0E0E0 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    box-shadow: none !important;
+  }
+
+  .custom-date-picker .ant-picker-panel {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .custom-date-picker .ant-picker-ok {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 8px !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn {
+    background: rgb(237, 0, 141) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 700 !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn:hover {
+    background: #00AEEF !important;
+    transform: translateY(-2px) !important;
+  }
+
+  .appointment-form .ant-btn-primary {
+    background: rgb(237, 0, 141) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 700 !important;
+    width: 100% !important;
+    max-width: 250px !important;
+  }
+
+  .appointment-form .ant-btn-primary:hover {
+    background: #00AEEF !important;
+    transform: translateY(-2px) !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -303,36 +364,41 @@
     transform: translateX(0) !important;
   }
 
-  .ant-picker-panel-container {
+  .custom-date-picker .ant-picker-panel-container {
     width: 100% !important;
     max-width: 90vw !important;
     margin: 0 auto !important;
+    background: #E0E0E0 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
   }
 
-  .ant-picker-panel {
+  .custom-date-picker .ant-picker-panel {
     width: 100% !important;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: transparent !important;
+    border: none !important;
   }
 
-  .ant-picker-content {
+  .custom-date-picker .ant-picker-content {
     width: 100% !important;
     font-size: 12px !important;
   }
 
-  .ant-picker-cell {
+  .custom-date-picker .ant-picker-cell {
     padding: 2px !important;
   }
 
-  .ant-picker-time-panel {
+  .custom-date-picker .ant-picker-time-panel {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
     overflow-x: auto !important;
   }
 
-  .ant-picker-time-panel-column {
+  .custom-date-picker .ant-picker-time-panel-column {
     width: 80px !important;
     font-size: 12px !important;
     overflow-y: auto !important;
@@ -341,9 +407,36 @@
     flex-shrink: 0 !important;
   }
 
-  .ant-picker-time-panel-column > li {
+  .custom-date-picker .ant-picker-time-panel-column > li {
     padding: 4px 0 !important;
     text-align: center !important;
+  }
+
+  .custom-date-picker .ant-picker-ok {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 8px 0 !important;
+  }
+
+  .custom-date-picker .ant-picker-ok .ant-btn {
+    background: rgb(237, 0, 141) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 700 !important;
+  }
+
+  .mobile-date-time-picker .ant-btn-primary {
+    margin: 8px auto 0 !important;
+    width: auto !important;
+    background: rgb(237, 0, 141) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 4px 16px !important;
+    font-weight: 700 !important;
   }
 }
 
@@ -387,34 +480,4 @@
 .suggestion-button:disabled {
   background: #555555 !important;
   cursor: not-allowed !important;
-}
-
-/* Center OK and Confirm buttons on mobile */
-@media (max-width: 768px) {
-  .custom-date-picker .ant-picker-ok {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 8px 0 !important;
-  }
-
-  .custom-date-picker .ant-picker-ok .ant-btn {
-    margin: 0 auto !important;
-    background: rgb(237, 0, 141) !important; /* Pink theme */
-    border: none !important;
-    color: #FFFFFF !important;
-    border-radius: 4px !important;
-    padding: 4px 16px !important;
-  }
-
-  .mobile-date-time-picker .ant-btn-primary {
-    margin: 8px auto 0 !important; /* Center horizontally */
-    width: auto !important;
-    background: rgb(237, 0, 141) !important; /* Pink theme */
-    border: none !important;
-    color: #FFFFFF !important;
-    border-radius: 4px !important;
-    padding: 4px 16px !important;
-  }
 }

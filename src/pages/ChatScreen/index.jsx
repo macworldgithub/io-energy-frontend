@@ -298,10 +298,10 @@ export default function ChatWidget() {
   const [isMobile, setIsMobile] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [isInitialQuestion, setIsInitialQuestion] = useState(true);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [isInitialQuestion, setIsInitialQuestion] = useState(true);
 
   const messagesEndRef = useRef(null);
 
@@ -429,7 +429,7 @@ export default function ChatWidget() {
     }
   };
 
-  const handleMobileConfirm = () => {
+  const handleConfirm = () => {
     if (selectedDate && selectedTime && fullName && email && phone) {
       const combined = selectedDate.clone().set({
         hour: selectedTime.hour(),
@@ -479,71 +479,68 @@ export default function ChatWidget() {
             {showAppointmentPicker && (
               <div className="message-wrapper">
                 <div className="bot-message date-picker-container">
-                  {!isMobile ? (
-                    <div>
-                      <Input
-                        placeholder="Full Name"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        style={{ marginBottom: 8 }}
-                      />
-                      <Input
-                        placeholder="Email Address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{ marginBottom: 8 }}
-                      />
-                      <Input
-                        placeholder="Phone Number"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        style={{ marginBottom: 8 }}
-                      />
-                      <DatePicker
-                        showTime
-                        format="YYYY-MM-DD HH:mm"
-                        placeholder="Select date and time"
-                        onOk={handleBookAppointment}
-                        popupClassName="custom-date-picker"
-                      />
-                    </div>
-                  ) : (
-                    <div className="mobile-date-time-picker">
-                      <Input
-                        placeholder="Full Name"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        style={{ marginBottom: 8 }}
-                      />
-                      <Input
-                        placeholder="Email Address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{ marginBottom: 8 }}
-                      />
-                      <Input
-                        placeholder="Phone Number"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        style={{ marginBottom: 8 }}
-                      />
-                      <DatePicker
-                        format="YYYY-MM-DD"
-                        placeholder="Select date"
-                        onChange={(date) => setSelectedDate(date)}
-                        popupClassName="custom-date-picker"
-                      />
-                      <TimePicker
-                        format="HH:mm"
-                        placeholder="Select time"
-                        onChange={(time) => setSelectedTime(time)}
-                        popupClassName="custom-date-picker"
-                      />
-                      <Button type="primary" size="small" onClick={handleMobileConfirm}>
-                        Confirm
-                      </Button>
-                    </div>
-                  )}
+                  <div className="appointment-form">
+                    <Input
+                      placeholder="Full Name"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      style={{ marginBottom: 8 }}
+                    />
+                    <Input
+                      placeholder="Email Address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      style={{ marginBottom: 8 }}
+                    />
+                    <Input
+                      placeholder="Phone Number"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      style={{ marginBottom: 8 }}
+                    />
+                    {!isMobile ? (
+                      <div>
+                        <DatePicker
+                          showTime
+                          format="YYYY-MM-DD HH:mm"
+                          placeholder="Select date and time"
+                          onChange={(date) => setSelectedDate(date)}
+                          popupClassName="custom-date-picker"
+                        />
+                        <Button
+                          type="primary"
+                          size="small"
+                          onClick={handleConfirm}
+                          style={{ marginTop: 8, width: "100%" }}
+                        >
+                          Confirm
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="mobile-date-time-picker">
+                        <DatePicker
+                          format="YYYY-MM-DD"
+                          placeholder="Select date"
+                          onChange={(date) => setSelectedDate(date)}
+                          popupClassName="custom-date-picker"
+                        />
+                        <TimePicker
+                          format="HH:mm"
+                          placeholder="Select time"
+                          onChange={(time) => setSelectedTime(time)}
+                          popupClassName="custom-date-picker"
+                        />
+                        <Button
+                          type="primary"
+                          size="small"
+                          onClick={handleConfirm}
+                          style={{ marginTop: 8 }}
+                        >
+                          Confirm
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
