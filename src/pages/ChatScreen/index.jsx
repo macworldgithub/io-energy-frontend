@@ -11,23 +11,28 @@
 //   const widgetId = "ths";
 //   const [isOpen, setIsOpen] = useState(false);
 //   const [messages, setMessages] = useState([
-//     { text: "Hello! May I have your full name, please?", sender: "bot", showButtons: false },
+//     {
+//       text: "Hello, and welcome to TheHypeSociety!\n\nMy name is Charles. Do you need support with any of the following?",
+//       sender: "bot",
+//       showButtons: false,
+//     },
 //   ]);
 //   const [input, setInput] = useState("");
 //   const [loading, setLoading] = useState(false);
 //   const [sessionId, setSessionId] = useState(null);
 //   const [showAppointmentPicker, setShowAppointmentPicker] = useState(false);
-
+//   const [suggestions, setSuggestions] = useState(["Digital Marketing", "Brand", "Content including UGC", "Website Design"]);
 //   const [isMobile, setIsMobile] = useState(false);
 //   const [selectedDate, setSelectedDate] = useState(null);
 //   const [selectedTime, setSelectedTime] = useState(null);
+//   const [isInitialQuestion, setIsInitialQuestion] = useState(true);
 
 //   const messagesEndRef = useRef(null);
 
 //   useEffect(() => {
 //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
-//     // detect mobile
+//     // Detect mobile
 //     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
 //     checkMobile();
 //     window.addEventListener("resize", checkMobile);
@@ -65,15 +70,26 @@
 //     });
 //   }
 
-//   const handleSend = async () => {
-//     if (input.trim() === "") return;
+//   const handleSuggestionClick = (suggestion) => {
+//     if (isInitialQuestion) {
+//       setIsInitialQuestion(false); // Move past the initial question
+//       handleSend(suggestion); // Directly submit the suggestion
+//     } else {
+//       setInput(suggestion); // Pre-populate the input for subsequent questions
+//     }
+//   };
 
-//     const newMessages = [...messages, { text: input, sender: "user", showButtons: false }];
+//   const handleSend = async (overrideInput = null) => {
+//     const messageToSend = overrideInput || input.trim();
+//     if (!messageToSend) return;
+
+//     const newMessages = [...messages, { text: messageToSend, sender: "user", showButtons: false }];
 //     setMessages(newMessages);
 //     setInput("");
 //     setLoading(true);
+//     setSuggestions([]); // Clear suggestions before sending
 
-//     const requestBody = { query: input };
+//     const requestBody = { query: messageToSend };
 //     if (sessionId) requestBody.session_id = sessionId;
 
 //     try {
@@ -81,19 +97,19 @@
 //       const newMessage = {
 //         text: response.data.message,
 //         sender: "bot",
-//         showButtons:
-//           response.data.message.toLowerCase().includes("preferred day") ||
-//           response.data.message.toLowerCase().includes("preferred time"),
+//         showButtons: response.data.message.toLowerCase().includes("preferred day"),
 //       };
 //       setMessages([...newMessages, newMessage]);
 //       setSessionId(response.data.session_id);
 //       setShowAppointmentPicker(newMessage.showButtons);
+//       setSuggestions(response.data.suggestions || []); // Set new suggestions
 //     } catch (error) {
-//       console.log(error)
+//       console.log(error);
 //       setMessages([
 //         ...newMessages,
 //         { text: "Sorry, something went wrong. Please try again.", sender: "bot", showButtons: false },
 //       ]);
+//       setSuggestions([]);
 //     } finally {
 //       setLoading(false);
 //     }
@@ -105,6 +121,7 @@
 //         ...messages,
 //         { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false },
 //       ]);
+//       setSuggestions([]);
 //       return;
 //     }
 
@@ -120,9 +137,11 @@
 //       });
 //       setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false }]);
 //       setShowAppointmentPicker(false);
+//       setSuggestions([]);
 //     } catch (error) {
 //       const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
 //       setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false }]);
+//       setSuggestions([]);
 //     } finally {
 //       setLoading(false);
 //     }
@@ -137,6 +156,7 @@
 //       handleBookAppointment(combined);
 //     } else {
 //       setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false }]);
+//       setSuggestions([]);
 //     }
 //   };
 
@@ -166,7 +186,7 @@
 //                 {msg.sender !== "user" && <img className="bot-avatar" src={image} alt="Bot Avatar" />}
 //                 <div
 //                   className={msg.sender === "user" ? "user-message" : "bot-message"}
-//                   dangerouslySetInnerHTML={{ __html: parseLinks(msg.text) }}
+//                   dangerouslySetInnerHTML={{ __html: parseLinks(msg.text.replace(/\n/g, "<br />")) }}
 //                 />
 //               </div>
 //             ))}
@@ -214,29 +234,44 @@
 //             <div ref={messagesEndRef} />
 //           </div>
 
-//           <div className="chat-popup-input">
-//             <Input
-//               placeholder="Type a message..."
-//               value={input}
-//               onChange={(e) => setInput(e.target.value)}
-//               onPressEnter={handleSend}
-//               disabled={loading || showAppointmentPicker}
-//             />
-//             <Button
-//               shape="circle"
-//               icon={<SendOutlined />}
-//               className="custom-send-button"
-//               onClick={handleSend}
-//               disabled={loading || showAppointmentPicker}
-//             />
-//           </div>
+//           {suggestions.length > 0 && !loading && !showAppointmentPicker && (
+//             <div className="suggestions-container">
+//               {suggestions.map((sug, sugIndex) => (
+//                 <Button
+//                   key={sugIndex}
+//                   className="suggestion-button"
+//                   onClick={() => handleSuggestionClick(sug)}
+//                   disabled={loading || showAppointmentPicker}
+//                 >
+//                   {sug}
+//                 </Button>
+//               ))}
+//             </div>
+//           )}
+
+//           {!isInitialQuestion && !showAppointmentPicker && (
+//             <div className="chat-popup-input">
+//               <Input
+//                 placeholder="Type a message..."
+//                 value={input}
+//                 onChange={(e) => setInput(e.target.value)}
+//                 onPressEnter={() => handleSend()}
+//                 disabled={loading}
+//               />
+//               <Button
+//                 shape="circle"
+//                 icon={<SendOutlined />}
+//                 className="custom-send-button"
+//                 onClick={() => handleSend()}
+//                 disabled={loading}
+//               />
+//             </div>
+//           )}
 //         </div>
 //       )}
 //     </div>
 //   );
 // }
-
-// Frontend: ChatWidget.jsx
 import { useState, useRef, useEffect } from "react";
 import { Button, Input, Spin, DatePicker, TimePicker } from "antd";
 import { SendOutlined, CloseOutlined } from "@ant-design/icons";
@@ -264,6 +299,9 @@ export default function ChatWidget() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isInitialQuestion, setIsInitialQuestion] = useState(true);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const messagesEndRef = useRef(null);
 
@@ -354,10 +392,10 @@ export default function ChatWidget() {
   };
 
   const handleBookAppointment = async (dateObj) => {
-    if (!sessionId || !dateObj) {
+    if (!sessionId || !dateObj || !fullName || !email || !phone) {
       setMessages([
         ...messages,
-        { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false },
+        { text: "Please provide your full name, email, phone number, and select a date and time for the appointment.", sender: "bot", showButtons: false },
       ]);
       setSuggestions([]);
       return;
@@ -372,10 +410,16 @@ export default function ChatWidget() {
         session_id: sessionId,
         preferred_day: preferredDay,
         preferred_time: preferredTime,
+        full_name: fullName,
+        email: email,
+        phone: phone,
       });
       setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false }]);
       setShowAppointmentPicker(false);
       setSuggestions([]);
+      setFullName("");
+      setEmail("");
+      setPhone("");
     } catch (error) {
       const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
       setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false }]);
@@ -386,14 +430,17 @@ export default function ChatWidget() {
   };
 
   const handleMobileConfirm = () => {
-    if (selectedDate && selectedTime) {
+    if (selectedDate && selectedTime && fullName && email && phone) {
       const combined = selectedDate.clone().set({
         hour: selectedTime.hour(),
         minute: selectedTime.minute(),
       });
       handleBookAppointment(combined);
     } else {
-      setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false }]);
+      setMessages([
+        ...messages,
+        { text: "Please provide your full name, email, phone number, and select both date and time.", sender: "bot", showButtons: false },
+      ]);
       setSuggestions([]);
     }
   };
@@ -433,15 +480,53 @@ export default function ChatWidget() {
               <div className="message-wrapper">
                 <div className="bot-message date-picker-container">
                   {!isMobile ? (
-                    <DatePicker
-                      showTime
-                      format="YYYY-MM-DD HH:mm"
-                      placeholder="Select date and time"
-                      onOk={handleBookAppointment}
-                      popupClassName="custom-date-picker"
-                    />
+                    <div>
+                      <Input
+                        placeholder="Full Name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        style={{ marginBottom: 8 }}
+                      />
+                      <Input
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        style={{ marginBottom: 8 }}
+                      />
+                      <Input
+                        placeholder="Phone Number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        style={{ marginBottom: 8 }}
+                      />
+                      <DatePicker
+                        showTime
+                        format="YYYY-MM-DD HH:mm"
+                        placeholder="Select date and time"
+                        onOk={handleBookAppointment}
+                        popupClassName="custom-date-picker"
+                      />
+                    </div>
                   ) : (
                     <div className="mobile-date-time-picker">
+                      <Input
+                        placeholder="Full Name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        style={{ marginBottom: 8 }}
+                      />
+                      <Input
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        style={{ marginBottom: 8 }}
+                      />
+                      <Input
+                        placeholder="Phone Number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        style={{ marginBottom: 8 }}
+                      />
                       <DatePicker
                         format="YYYY-MM-DD"
                         placeholder="Select date"
