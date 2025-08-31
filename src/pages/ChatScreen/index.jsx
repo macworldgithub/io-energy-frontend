@@ -1,4 +1,3 @@
-
 // import { useState, useRef, useEffect } from "react";
 // import { Button, Input, Spin, DatePicker, TimePicker } from "antd";
 // import { SendOutlined, CloseOutlined } from "@ant-design/icons";
@@ -25,6 +24,9 @@
 //   const [isMobile, setIsMobile] = useState(false);
 //   const [selectedDate, setSelectedDate] = useState(null);
 //   const [selectedTime, setSelectedTime] = useState(null);
+//   const [fullName, setFullName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [phone, setPhone] = useState("");
 //   const [isInitialQuestion, setIsInitialQuestion] = useState(true);
 
 //   const messagesEndRef = useRef(null);
@@ -116,10 +118,10 @@
 //   };
 
 //   const handleBookAppointment = async (dateObj) => {
-//     if (!sessionId || !dateObj) {
+//     if (!sessionId || !dateObj || !fullName || !email || !phone) {
 //       setMessages([
 //         ...messages,
-//         { text: "Please select a date and time for the appointment.", sender: "bot", showButtons: false },
+//         { text: "Please provide your full name, email, phone number, and select a date and time for the appointment.", sender: "bot", showButtons: false },
 //       ]);
 //       setSuggestions([]);
 //       return;
@@ -134,10 +136,16 @@
 //         session_id: sessionId,
 //         preferred_day: preferredDay,
 //         preferred_time: preferredTime,
+//         full_name: fullName,
+//         email: email,
+//         phone: phone,
 //       });
 //       setMessages([...messages, { text: response.data.message, sender: "bot", showButtons: false }]);
 //       setShowAppointmentPicker(false);
 //       setSuggestions([]);
+//       setFullName("");
+//       setEmail("");
+//       setPhone("");
 //     } catch (error) {
 //       const errorMessage = error.response?.data?.detail || "Error booking appointment. Please try again.";
 //       setMessages([...messages, { text: errorMessage, sender: "bot", showButtons: false }]);
@@ -147,16 +155,32 @@
 //     }
 //   };
 
-//   const handleMobileConfirm = () => {
-//     if (selectedDate && selectedTime) {
+//   const handleConfirm = () => {
+//     if (!fullName || !email || !phone || !selectedDate) {
+//       setMessages([
+//         ...messages,
+//         { text: "Please provide your full name, email, phone number, and select a date and time.", sender: "bot", showButtons: false },
+//       ]);
+//       setSuggestions([]);
+//       return;
+//     }
+
+//     if (isMobile) {
+//       if (!selectedTime) {
+//         setMessages([
+//           ...messages,
+//           { text: "Please select a time for your appointment.", sender: "bot", showButtons: false },
+//         ]);
+//         setSuggestions([]);
+//         return;
+//       }
 //       const combined = selectedDate.clone().set({
 //         hour: selectedTime.hour(),
 //         minute: selectedTime.minute(),
 //       });
 //       handleBookAppointment(combined);
 //     } else {
-//       setMessages([...messages, { text: "Please select both date and time.", sender: "bot", showButtons: false }]);
-//       setSuggestions([]);
+//       handleBookAppointment(selectedDate);
 //     }
 //   };
 
@@ -194,33 +218,68 @@
 //             {showAppointmentPicker && (
 //               <div className="message-wrapper">
 //                 <div className="bot-message date-picker-container">
-//                   {!isMobile ? (
-//                     <DatePicker
-//                       showTime
-//                       format="YYYY-MM-DD HH:mm"
-//                       placeholder="Select date and time"
-//                       onOk={handleBookAppointment}
-//                       popupClassName="custom-date-picker"
+//                   <div className="appointment-form">
+//                     <Input
+//                       placeholder="Full Name"
+//                       value={fullName}
+//                       onChange={(e) => setFullName(e.target.value)}
+//                       style={{ marginBottom: 8 }}
 //                     />
-//                   ) : (
-//                     <div className="mobile-date-time-picker">
-//                       <DatePicker
-//                         format="YYYY-MM-DD"
-//                         placeholder="Select date"
-//                         onChange={(date) => setSelectedDate(date)}
-//                         popupClassName="custom-date-picker"
-//                       />
-//                       <TimePicker
-//                         format="HH:mm"
-//                         placeholder="Select time"
-//                         onChange={(time) => setSelectedTime(time)}
-//                         popupClassName="custom-date-picker"
-//                       />
-//                       <Button type="primary" size="small" onClick={handleMobileConfirm}>
-//                         Confirm
-//                       </Button>
-//                     </div>
-//                   )}
+//                     <Input
+//                       placeholder="Email Address"
+//                       value={email}
+//                       onChange={(e) => setEmail(e.target.value)}
+//                       style={{ marginBottom: 8 }}
+//                     />
+//                     <Input
+//                       placeholder="Phone Number"
+//                       value={phone}
+//                       onChange={(e) => setPhone(e.target.value)}
+//                       style={{ marginBottom: 8 }}
+//                     />
+//                     {!isMobile ? (
+//                       <div>
+//                         <DatePicker
+//                           showTime
+//                           format="YYYY-MM-DD HH:mm"
+//                           placeholder="Select date and time"
+//                           onChange={(date) => setSelectedDate(date)}
+//                           popupClassName="custom-date-picker"
+//                         />
+//                         <Button
+//                           type="primary"
+//                           size="small"
+//                           onClick={handleConfirm}
+//                           style={{ marginTop: 8, width: "100%" }}
+//                         >
+//                           Confirm
+//                         </Button>
+//                       </div>
+//                     ) : (
+//                       <div className="mobile-date-time-picker">
+//                         <DatePicker
+//                           format="YYYY-MM-DD"
+//                           placeholder="Select date"
+//                           onChange={(date) => setSelectedDate(date)}
+//                           popupClassName="custom-date-picker"
+//                         />
+//                         <TimePicker
+//                           format="HH:mm"
+//                           placeholder="Select time"
+//                           onChange={(time) => setSelectedTime(time)}
+//                           popupClassName="custom-date-picker"
+//                         />
+//                         <Button
+//                           type="primary"
+//                           size="small"
+//                           onClick={handleConfirm}
+//                           style={{ marginTop: 8 }}
+//                         >
+//                           Confirm
+//                         </Button>
+//                       </div>
+//                     )}
+//                   </div>
 //                 </div>
 //               </div>
 //             )}
