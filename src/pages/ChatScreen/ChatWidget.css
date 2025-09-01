@@ -450,9 +450,14 @@
     font-size: 12px !important; /* Smaller font size for mobile */
     font-weight: 700 !important;
     line-height: 1.5 !important; /* Ensure proper text alignment */
-    text-align: center !important; /* Center the text */
+    display: flex !important; /* Use Flexbox for centering */
+    align-items: center !important; /* Vertically center content */
+    justify-content: center !important; /* Horizontally center content */
+    height: 32px !important; /* Fixed height to ensure consistent button size */
+    text-align: center !important; /* Fallback for text alignment */
     box-sizing: border-box !important; /* Ensure padding doesn't cause overflow */
   }
+
   .mobile-date-time-picker .ant-btn-primary:hover {
     background: #00AEEF !important;
     transform: translateY(-2px) !important;
