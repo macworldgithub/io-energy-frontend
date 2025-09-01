@@ -428,7 +428,7 @@
     font-weight: 700 !important;
   }
 
-  .mobile-date-time-picker .ant-btn-primary {
+  /* .mobile-date-time-picker .ant-btn-primary {
     margin: 8px auto 0 !important;
     width: auto !important;
     background: rgb(237, 0, 141) !important;
@@ -437,6 +437,25 @@
     border-radius: 4px !important;
     padding: 4px 16px !important;
     font-weight: 700 !important;
+  } */
+   .mobile-date-time-picker .ant-btn-primary {
+    margin: 8px auto 0 !important;
+    width: 100% !important; /* Ensure full width for consistency */
+    max-width: 120px !important; /* Limit max width to prevent overflow */
+    background: rgb(237, 0, 141) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    border-radius: 4px !important;
+    padding: 6px 16px !important; /* Increased vertical padding for better rectangular shape */
+    font-size: 12px !important; /* Smaller font size for mobile */
+    font-weight: 700 !important;
+    line-height: 1.5 !important; /* Ensure proper text alignment */
+    text-align: center !important; /* Center the text */
+    box-sizing: border-box !important; /* Ensure padding doesn't cause overflow */
+  }
+  .mobile-date-time-picker .ant-btn-primary:hover {
+    background: #00AEEF !important;
+    transform: translateY(-2px) !important;
   }
 }
 
