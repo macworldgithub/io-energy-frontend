@@ -1,303 +1,342 @@
-/* Chat Widget Wrapper */
-.ai-chat-widget-wrapper {
-    position: fixed !important;
-    z-index: 2147483647 !important; /* Max z-index in CSS */
-    font-family: 'Roboto', sans-serif;
-}
-
-/* Chat Button Container */
-.chat-button-container {
-  position: fixed;
+/* src/components/ChatWidget.css */
+.io-chat-widget {
+  position: fixed !important;
   bottom: 20px;
   left: 20px;
-  transform: translateY(0);
-  transition: all 0.3s ease;
-  animation: slideIn 0.5s ease-out forwards;
-  animation-delay: 1s;
-  z-index: 9999;
+  z-index: 2147483647 !important;
+  font-family: 'Inter', 'Roboto', sans-serif;
 }
 
-@media (min-width: 769px) {
-  .chat-button-container {
-    bottom: 20px;
-    left: 20px;
-    transform: translateY(0);
-  }
-
-  @keyframes slideIn {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
+/* Floating Button */
+.io-chat-button-container {
+  animation: slideIn 0.6s ease-out forwards;
+  animation-delay: 0.8s;
 }
 
-@media (max-width: 768px) {
-  .chat-button-container {
-    bottom: 15px;
-    left: 5%;
-    transform: translateY(0);
-  }
-
-  @keyframes slideIn {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
+@keyframes slideIn {
+  from { transform: translateX(-120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
-/* Chat Button */
-.chat-button {
-  background: #FF0000;
+.io-chat-button {
+  background: linear-gradient(135deg, rgb(255, 18, 127), rgb(220, 0, 100));
+  color: white;
   border: none;
-  border-radius: 0 8px 8px 0;
-  padding: 12px 16px;
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 14px rgba(255, 18, 127, 0.4);
   transition: all 0.3s ease;
-  height: 48px;
-  width: auto;
-  min-width: 140px;
+  font-weight: 600;
+  min-width: 160px;
   position: relative;
   overflow: hidden;
 }
 
-.chat-button:hover {
-  background: #CC0000;
-  transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.chat-button:active {
-  transform: translateX(2px);
-}
-
-.chat-button-icon {
-  color: #FFFFFF;
-  width: 18px;
-  height: 18px;
-  transition: transform 0.3s ease;
-}
-
-.chat-button:hover .chat-button-icon {
-  transform: scale(1.1);
-}
-
-.chat-button-text {
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
-
-/* Shine Effect */
-.chat-button::before {
+.io-chat-button::before {
   content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
   transform: rotate(45deg);
   animation: shine 3s infinite;
 }
 
 @keyframes shine {
-  0% {
-    transform: translateX(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) rotate(45deg);
-  }
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.io-chat-button:hover {
+  background: linear-gradient(135deg, rgb(255, 50, 140), rgb(200, 0, 90));
+  transform: translateX(4px);
+  box-shadow: 0 6px 18px rgba(255, 18, 127, 0.5);
+}
+
+.io-chat-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.io-chat-text {
+  font-size: 14px;
+  letter-spacing: 0.3px;
 }
 
 /* Chat Popup */
-.chat-popup {
-    position: fixed !important;
-    bottom: 20px !important;
-    left: 20px !important;
-    width: 360px !important;
-    height: 420px !important;
-    background: #000000 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-    z-index: 2147483647 !important; /* Force to top of all stacking contexts */
+.io-chat-popup {
+  width: 380px;
+  height: 520px;
+  background: #0A0A0A;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 18, 127, 0.2);
 }
 
 @media (max-width: 768px) {
-  .chat-popup {
-    width: 85%; /* Reduced from 90% to prevent overflow */
-    max-width: 300px; /* Added max-width for better control */
-    left: 5%;
-    right: 5%;
-    bottom: 15px;
-    height: 70vh;
+  .io-chat-popup {
+    width: 90%;
+    left: 5% !important;
+    height: 75vh;
+    max-height: 600px;
   }
-
-  .chat-button {
-    height: 40px;
-    min-width: 120px;
-    padding: 10px 14px;
-  }
-
-  .chat-button-text {
+  .io-chat-button {
+    min-width: 130px;
+    padding: 12px 16px;
     font-size: 13px;
-  }
-
-  .chat-button-icon {
-    width: 16px;
-    height: 16px;
   }
 }
 
-/* Chat Header */
-.chat-popup-header {
-  background: #FF0000;
-  color: #FFFFFF;
-  font-weight: 700;
+/* Header */
+.io-chat-header {
+  background: linear-gradient(135deg, rgb(255, 18, 127), rgb(200, 0, 100));
+  color: white;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
-  height: 40px;
+  font-weight: 600;
+  font-size: 15px;
 }
 
-/* Close Icon */
-.chat-popup-close {
+.io-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.io-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.io-close {
   cursor: pointer;
   font-size: 18px;
-  color: #FFFFFF;
-}
-
-/* Chat Messages Area (scrollable) */
-.chat-popup-messages {
-  flex: 1;
-  padding: 16px;
-  overflow-y: auto;
-  background-color: #1A1A1A;
-  scroll-behavior: smooth;
-}
-
-/* Chat Input */
-.chat-popup-input {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #333333;
-  background: #000000;
-  flex-shrink: 0;
-}
-
-/* Send Button */
-.custom-send-button {
-  background: #FF0000;
-  border: none;
-  color: #FFFFFF;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  margin-left: 8px;
-}
-
-.custom-send-button:hover {
-  background: #CC0000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  transform: translateY(-2px);
-}
-
-.custom-send-button:active {
-  transform: translateY(0);
-}
-
-.custom-send-button .anticon {
-  color: #FFFFFF;
-}
-
-/* Message Wrapper */
-.message-wrapper {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-/* Bot Avatar */
-.bot-avatar {
-  width: 32px;
-  height: 32px;
-  margin-right: 8px;
+  padding: 4px;
   border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.io-close:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Messages */
-.bot-message,
-.user-message {
-  padding: 10px 14px;
-  border-radius: 8px;
-  max-width: 80%;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  font-size: 14px;
-  line-height: 1.4;
+.io-chat-messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background: #0F0F0F;
+  scroll-behavior: smooth;
 }
 
-.bot-message {
-  background: #333333;
-  color: #FFFFFF;
+.io-message-wrapper {
+  display: flex;
+  margin-bottom: 12px;
+  align-items: flex-start;
 }
 
-.user-message {
-  background: #FF0000;
-  color: #FFFFFF;
-  font-weight: 700;
-  margin-left: auto;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+.io-message-wrapper.user {
+  justify-content: flex-end;
 }
 
-/* Loading Spinner */
-.loading-message {
+.io-bot-avatar {
+  width: 32px;
+  height: 32px;
+  background: rgb(255, 18, 127);
+  color: white;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px;
+  justify-content: center;
+  font-weight: bold;
   font-size: 13px;
-  color: #CCCCCC;
+  margin-right: 10px;
+  flex-shrink: 0;
 }
 
-/* Date Picker Container */
-.date-picker-container {
-  background: #E0E0E0;
+.io-message {
   padding: 10px 14px;
-  border-radius: 8px;
-  max-width: 80%;
+  border-radius: 14px;
+  max-width: 78%;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.io-message.bot {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 18, 127, 0.2);
+  margin-left: 8px;
+}
+
+.io-message.user {
+  background: rgb(255, 18, 127);
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(255, 18, 127, 0.3);
 }
 
 /* Appointment Form */
-.appointment-form {
+.io-appointment-form {
+  background: #1A1A1A;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 18, 127, 0.3);
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+/* Unified Input & Picker Styling */
+.io-form-input,
+.io-form-input .ant-input,
+.io-form-input .ant-picker {
+  background: #0F0F0F !important;
+  border: 1px solid rgba(255, 18, 127, 0.4) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  height: 36px !important;
+  font-size: 13px !important;
+}
+
+.io-form-input::placeholder,
+.io-form-input .ant-input::placeholder,
+.io-form-input .ant-picker-input input::placeholder,
+.io-form-input .ant-picker-placeholder {
+  color: #888 !important;
+  opacity: 1 !important;
+}
+
+/* Ensure placeholder is visible in picker input */
+.io-picker-input .ant-picker-input > input::placeholder {
+  color: #888 !important;
+  opacity: 1 !important;
+}
+
+/* Confirm Button */
+.io-confirm-btn {
+  background: #FF127F !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  border-radius: 8px !important;
+  height: 36px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.io-confirm-btn:hover {
+  background: #E00B6F !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(255, 18, 127, 0.4) !important;
+}
+
+/* Input Area */
+.io-chat-input {
+  display: flex;
+  padding: 12px;
+  background: #0A0A0A;
+  border-top: 1px solid rgba(255, 18, 127, 0.2);
   gap: 8px;
+  align-items: center;
 }
 
-.ant-picker {
-  width: 100%;
-  max-width: 250px;
+.io-chat-input .ant-input {
+  background: #1A1A1A;
+  border: 1px solid rgba(255, 18, 127, 0.4);
+  color: white;
+  border-radius: 12px;
+  flex: 1;
 }
 
-.custom-date-picker {
+.io-chat-input .ant-input::placeholder {
+  color: #666;
+}
+
+/* SEND BUTTON */
+.io-send-btn {
+  background: rgb(255, 18, 127) !important;
+  border: 2px solid white !important;
+  color: white !important;
+  border-radius: 50%;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 18, 127, 0.4);
+  flex-shrink: 0;
+}
+
+.io-send-btn:hover {
+  background: rgb(230, 0, 110) !important;
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(255, 18, 127, 0.5);
+}
+
+.io-send-btn .anticon {
+  font-size: 18px;
+  color: white !important;
+}
+
+/* Suggestions */
+.io-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  background: #0F0F0F;
+  border-top: 1px solid rgba(255, 18, 127, 0.2);
+}
+
+.io-suggestion-btn {
+  background: rgba(255, 18, 127, 0.15) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 18, 127, 0.4) !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  padding: 6px 14px !important;
+  height: auto !important;
+  transition: all 0.3s ease !important;
+}
+
+.io-suggestion-btn:hover {
+  background: rgb(255, 18, 127) !important;
+  color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(255, 18, 127, 0.3) !important;
+}
+
+/* Loading */
+.io-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #FF127F;
+  font-size: 13px;
+  padding: 8px 0;
+  font-weight: 500;
+}
+
+/* ------------------------------------------------------------------
+   CUSTOM DATE PICKER – Light panel + red OK button
+   ------------------------------------------------------------------ */
+.io-custom-date-picker {
   z-index: 2147483649 !important;
   background: #E0E0E0 !important;
   border-radius: 8px !important;
@@ -305,27 +344,22 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
+/* Desktop */
 @media (min-width: 769px) {
-  .custom-date-picker .ant-picker-panel-container {
+  .io-custom-date-picker .ant-picker-panel-container {
     background: #E0E0E0 !important;
     border-radius: 8px !important;
     padding: 8px !important;
     box-shadow: none !important;
   }
 
-  .custom-date-picker .ant-picker-panel {
+  .io-custom-date-picker .ant-picker-panel {
     background: transparent !important;
     border: none !important;
   }
 
-  .custom-date-picker .ant-picker-ok {
-    display: flex !important;
-    justify-content: center !important;
-    margin-top: 8px !important;
-  }
-
-  .custom-date-picker .ant-picker-ok .ant-btn {
-    background: #FF0000 !important;
+  .io-custom-date-picker .ant-picker-ok .ant-btn {
+    background: #FF127F !important;
     border: none !important;
     color: #FFFFFF !important;
     border-radius: 4px !important;
@@ -333,30 +367,15 @@
     font-weight: 700 !important;
   }
 
-  .custom-date-picker .ant-picker-ok .ant-btn:hover {
-    background: #CC0000 !important;
-    transform: translateY(-2px) !important;
-  }
-
-  .appointment-form .ant-btn-primary {
-    background: #FF0000 !important;
-    border: none !important;
-    color: #FFFFFF !important;
-    border-radius: 4px !important;
-    padding: 4px 16px !important;
-    font-weight: 700 !important;
-    width: 100% !important;
-    max-width: 250px !important;
-  }
-
-  .appointment-form .ant-btn-primary:hover {
-    background: #CC0000 !important;
+  .io-custom-date-picker .ant-picker-ok .ant-btn:hover {
+    background: #E00B6F !important;
     transform: translateY(-2px) !important;
   }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
-  .custom-date-picker {
+  .io-custom-date-picker {
     width: 90vw !important;
     max-width: 90% !important;
     left: 5% !important;
@@ -364,7 +383,7 @@
     transform: translateX(0) !important;
   }
 
-  .custom-date-picker .ant-picker-panel-container {
+  .io-custom-date-picker .ant-picker-panel-container {
     width: 100% !important;
     max-width: 90vw !important;
     margin: 0 auto !important;
@@ -373,7 +392,7 @@
     padding: 8px !important;
   }
 
-  .custom-date-picker .ant-picker-panel {
+  .io-custom-date-picker .ant-picker-panel {
     width: 100% !important;
     display: flex;
     flex-direction: column;
@@ -382,23 +401,23 @@
     border: none !important;
   }
 
-  .custom-date-picker .ant-picker-content {
+  .io-custom-date-picker .ant-picker-content {
     width: 100% !important;
     font-size: 12px !important;
   }
 
-  .custom-date-picker .ant-picker-cell {
+  .io-custom-date-picker .ant-picker-cell {
     padding: 2px !important;
   }
 
-  .custom-date-picker .ant-picker-time-panel {
+  .io-custom-date-picker .ant-picker-time-panel {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
     overflow-x: auto !important;
   }
 
-  .custom-date-picker .ant-picker-time-panel-column {
+  .io-custom-date-picker .ant-picker-time-panel-column {
     width: 80px !important;
     font-size: 12px !important;
     overflow-y: auto !important;
@@ -407,20 +426,20 @@
     flex-shrink: 0 !important;
   }
 
-  .custom-date-picker .ant-picker-time-panel-column > li {
+  .io-custom-date-picker .ant-picker-time-panel-column > li {
     padding: 4px 0 !important;
     text-align: center !important;
   }
 
-  .custom-date-picker .ant-picker-ok {
+  .io-custom-date-picker .ant-picker-ok {
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
     margin: 8px 0 !important;
   }
 
-  .custom-date-picker .ant-picker-ok .ant-btn {
-    background: #FF0000 !important;
+  .io-custom-date-picker .ant-picker-ok .ant-btn {
+    background: #FF127F !important;
     border: none !important;
     color: #FFFFFF !important;
     border-radius: 4px !important;
@@ -428,70 +447,8 @@
     font-weight: 700 !important;
   }
 
-   .mobile-date-time-picker .ant-btn-primary {
-    margin: 8px auto 0 !important;
-    width: 100% !important; /* Ensure full width for consistency */
-    max-width: 120px !important; /* Limit max width to prevent overflow */
-    background: #FF0000 !important;
-    border: none !important;
-    color: #FFFFFF !important;
-    border-radius: 4px !important;
-    padding: 6px 16px !important; /* Increased vertical padding for better rectangular shape */
-    font-size: 12px !important; /* Smaller font size for mobile */
-    font-weight: 700 !important;
-    line-height: 1.5 !important; /* Ensure proper text alignment */
-    display: flex !important; /* Use Flexbox for centering */
-    align-items: center !important; /* Vertically center content */
-    justify-content: center !important; /* Horizontally center content */
-    height: 32px !important; /* Fixed height to ensure consistent button size */
-    text-align: center !important; /* Fallback for text alignment */
-    box-sizing: border-box !important; /* Ensure padding doesn't cause overflow */
-  }
-
-  .mobile-date-time-picker .ant-btn-primary:hover {
-    background: #CC0000 !important;
+  .io-custom-date-picker .ant-picker-ok .ant-btn:hover {
+    background: #E00B6F !important;
     transform: translateY(-2px) !important;
   }
-}
-
-/* Mobile specific date + time picker layout */
-.mobile-date-time-picker {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mobile-date-time-picker .ant-picker {
-  width: 100% !important;
-}
-
-/* Suggestions Container */
-.suggestions-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px;
-  background: #1A1A1A;
-  border-top: 1px solid #333333;
-}
-
-.suggestion-button {
-  background: #333333 !important;
-  color: #FFFFFF !important;
-  border: none !important;
-  border-radius: 16px !important;
-  padding: 4px 12px !important;
-  font-size: 12px !important;
-  height: auto !important;
-  transition: all 0.3s ease !important;
-}
-
-.suggestion-button:hover {
-  background: #FF0000 !important;
-  transform: translateY(-1px) !important;
-}
-
-.suggestion-button:disabled {
-  background: #555555 !important;
-  cursor: not-allowed !important;
 }
