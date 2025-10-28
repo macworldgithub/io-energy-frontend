@@ -314,14 +314,36 @@ export default function ChatWidget() {
 
           {/* Input */}
           {!showAppointmentPicker && (
+            // <div className="io-chat-input">
+            //   <Input
+            //     placeholder="Ask about solar, plans, or savings..."
+            //     value={input}
+            //     onChange={(e) => setInput(e.target.value)}
+            //     onPressEnter={() => handleSend()}
+            //     disabled={loading}
+            //     className="io-form-input"
+            //   />
+            //   <Button
+            //     icon={<SendOutlined />}
+            //     className="io-send-btn"
+            //     onClick={() => handleSend()}
+            //     disabled={loading}
+            //   />
+            // </div>
             <div className="io-chat-input">
-              <Input
+              <Input.TextArea
                 placeholder="Ask about solar, plans, or savings..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onPressEnter={() => handleSend()}
+                onPressEnter={(e) => {
+                  if (!e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                  }
+                }}
                 disabled={loading}
-                className="io-form-input"
+                autoSize={{ minRows: 1, maxRows: 4 }}
+                className="io-chat-textarea"
               />
               <Button
                 icon={<SendOutlined />}
