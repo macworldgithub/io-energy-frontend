@@ -162,6 +162,7 @@
 .io-message-wrapper.user {
   justify-content: flex-end;
 }
+
 .io-chat-textarea {
   background: #1A1A1A !important;
   border: 1px solid rgba(255, 18, 127, 0.4) !important;
@@ -221,6 +222,56 @@
   box-shadow: 0 2px 6px rgba(255, 18, 127, 0.3);
 }
 
+/* MARKDOWN STYLES */
+.io-message strong {
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.io-message em {
+  font-style: italic;
+  color: #FF6BA3;
+}
+
+.io-message ul,
+.io-message ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.io-message li {
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.io-message p {
+  margin: 8px 0;
+}
+
+.io-message a {
+  color: #FF127F !important;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.io-message code {
+  background: rgba(255, 18, 127, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'Courier New', monospace;
+}
+
+.io-message pre {
+  background: #1A1A1A;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 18, 127, 0.3);
+  margin: 8px 0;
+  font-size: 0.9em;
+}
+
 /* Appointment Form */
 .io-appointment-form {
   background: #1A1A1A;
@@ -253,7 +304,6 @@
   opacity: 1 !important;
 }
 
-/* Ensure placeholder is visible in picker input */
 .io-picker-input .ant-picker-input > input::placeholder {
   color: #888 !important;
   opacity: 1 !important;
@@ -364,9 +414,7 @@
   font-weight: 500;
 }
 
-/* ------------------------------------------------------------------
-   CUSTOM DATE PICKER – Light panel + red OK button
-   ------------------------------------------------------------------ */
+/* CUSTOM DATE PICKER */
 .io-custom-date-picker {
   z-index: 2147483649 !important;
   background: #E0E0E0 !important;
@@ -375,7 +423,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Desktop */
 @media (min-width: 769px) {
   .io-custom-date-picker .ant-picker-panel-container {
     background: #E0E0E0 !important;
@@ -404,7 +451,6 @@
   }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .io-custom-date-picker {
     width: 90vw !important;
