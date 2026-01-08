@@ -39,22 +39,22 @@
 }
 @media (max-width: 768px) {
   .io-chart-container {
-    width: 90%;           /* Make it wider on mobile */
+    width: 95%;           /* Make it wider on mobile */
     max-width: 100%;      /* Remove max-width limit */
     margin-left: auto;
     margin-right: auto;
   }
 
   .io-chart-container canvas {
-    max-height: 250px !important;  /* Increased from 240px */
-    height: 250px !important;
+    max-height: 280px !important;  /* Increased from 240px */
+    height: 280px !important;
   }
 }
 
 @media (max-width: 480px) {
   .io-chart-container canvas {
-    max-height: 200px !important;
-    height: 200px !important;
+    max-height: 250px !important;
+    height: 250px !important;
   }
 }
 /* Floating Button */
