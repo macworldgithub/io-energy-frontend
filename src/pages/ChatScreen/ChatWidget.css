@@ -1,12 +1,44 @@
-/* src/components/ChatWidget.css */
-
 /* Root Widget Positioning */
 .io-chat-widget {
   position: fixed !important;
   bottom: 20px;
   left: 20px;
   z-index: 2147483647 !important;
-  font-family: 'Inter', 'Roboto', sans-serif;
+  font-family: "Inter", "Roboto", sans-serif;
+}
+
+.io-chart-container {
+  margin: 20px 8px 8px 8px;
+  width: calc(100% - 16px);
+  max-width: 100%;
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 18, 127, 0.3);
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: block;
+  /* left align chart and reduce size */
+  /* margin-left: 40px; */
+  margin-top: 8px;
+  width: 70%;
+  max-width: 320px;
+}
+
+/* Ensure canvas is responsive */
+.io-chart-container canvas {
+  width: 100% !important;
+  height: auto !important;
+  /* reduced max-height for smaller chart display */
+  max-height: 240px;
+}
+
+.io-chart-container > div:first-child {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #ff6ba3;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 /* Floating Button */
@@ -16,8 +48,14 @@
 }
 
 @keyframes slideIn {
-  from { transform: translateX(-120%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .io-chat-button {
@@ -51,8 +89,12 @@
 }
 
 @keyframes shine {
-  0% { transform: translateX(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) rotate(45deg); }
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
 }
 
 .io-chat-button:hover {
@@ -73,13 +115,14 @@
 .io-chat-text {
   font-size: 14px;
   letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
-/* Chat Popup */
+/* Chat Popup - Enhanced responsive design */
 .io-chat-popup {
   width: 380px;
   height: 520px;
-  background: #0A0A0A;
+  background: #0a0a0a;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
   display: flex;
@@ -88,20 +131,40 @@
   border: 1px solid rgba(255, 18, 127, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .io-chat-popup {
-    width: 90%;
-    left: 5% !important;
-    height: 75vh;
+    width: 360px;
+    height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .io-chat-widget {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .io-chat-popup {
+    width: calc(100vw - 32px);
+    left: 16px !important;
+    right: 16px !important;
+    height: 70vh;
     max-height: 600px;
     position: fixed;
-    bottom: 20px;
+    bottom: 80px;
+    border-radius: 14px;
   }
 
   .io-chat-button {
     min-width: 140px;
-    padding: 12px 16px;
+    padding: 12px 14px;
     font-size: 13px;
+    gap: 8px;
+  }
+
+  .io-chat-button-container {
+    width: 100%;
   }
 
   .io-chat-icon-logo {
@@ -110,22 +173,60 @@
   }
 }
 
-/* Header */
+@media (max-width: 480px) {
+  .io-chat-widget {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .io-chat-popup {
+    width: calc(100vw - 24px);
+    left: 12px !important;
+    right: 12px !important;
+    height: 80vh;
+    bottom: 70px;
+    border-radius: 12px;
+  }
+
+  .io-chat-button {
+    min-width: 130px;
+    padding: 10px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .io-chat-text {
+    font-size: 12px;
+  }
+}
+
+/* Header - Better padding on mobile */
 .io-chat-header {
   background: linear-gradient(135deg, rgb(255, 18, 127), rgb(200, 0, 100));
   color: white;
-  padding: 12px 16px;
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
   font-size: 15px;
+  flex-shrink: 0;
+  gap: 12px;
 }
 
 .io-header-left {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.io-header-left span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .io-logo {
@@ -135,57 +236,108 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   object-fit: contain;
   background: white;
+  flex-shrink: 0;
 }
 
 .io-close {
   cursor: pointer;
   font-size: 18px;
-  padding: 4px;
+  padding: 4px 6px;
   border-radius: 50%;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .io-close:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Tabs */
+/* Tabs - Better responsive tab styling */
+.io-custom-tabs {
+  background: #0a0a0a !important;
+}
+
 .io-custom-tabs .ant-tabs-nav {
-  background: #0A0A0A !important;
-  margin: 0;
+  background: #0a0a0a !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  border-bottom: 1px solid rgba(255, 18, 127, 0.1) !important;
 }
 
 .io-custom-tabs .ant-tabs-tab {
-  color: white !important;
+  color: #888 !important;
   font-weight: 500 !important;
-  padding: 12px 20px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  transition: color 0.3s ease !important;
+  flex: 1;
 }
 
 .io-custom-tabs .ant-tabs-tab:hover {
-  color: #FF127F !important;
+  color: #ff127f !important;
 }
 
 .io-custom-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #FF127F !important;
+  color: #ff127f !important;
+  font-weight: 600 !important;
 }
 
 .io-custom-tabs .ant-tabs-ink-bar {
-  background: #FF127F !important;
+  background: #ff127f !important;
+  height: 3px !important;
 }
 
-/* Messages Area */
+@media (max-width: 768px) {
+  .io-custom-tabs .ant-tabs-nav {
+    padding: 0 8px !important;
+  }
+
+  .io-custom-tabs .ant-tabs-tab {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* Messages Area - Improved scrolling and spacing */
 .io-chat-messages {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  background: #0F0F0F;
+  background: #0f0f0f;
   scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.io-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.io-chat-messages::-webkit-scrollbar-track {
+  background: rgba(255, 18, 127, 0.05);
+  border-radius: 3px;
+}
+
+.io-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 18, 127, 0.3);
+  border-radius: 3px;
+}
+
+.io-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 18, 127, 0.5);
 }
 
 .io-message-wrapper {
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   align-items: flex-start;
+  gap: 8px;
+  /* make wrapper flex-column to stack chart below message */
+  flex-direction: column;
 }
 
 .io-message-wrapper.user {
@@ -200,7 +352,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 8px;
   flex-shrink: 0;
   overflow: hidden;
   border: 1px solid rgba(255, 18, 127, 0.3);
@@ -217,18 +369,20 @@
 .io-message {
   padding: 10px 14px;
   border-radius: 14px;
-  max-width: 78%;
+  max-width: 80%;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  /* add align-self to proper position message content */
+  align-self: flex-start;
 }
 
-/* Fixed selector: was invalid syntax before */
 .io-message.bot {
-  background: #1A1A1A;
-  color: #FFFFFF;
+  background: #1a1a1a;
+  color: #ffffff;
   border: 1px solid rgba(255, 18, 127, 0.2);
-  margin-left: 8px;
+  margin-left: 0;
 }
 
 .io-message.user {
@@ -236,38 +390,40 @@
   color: white;
   font-weight: 500;
   box-shadow: 0 2px 6px rgba(255, 18, 127, 0.3);
+  /* align user message to right */
+  align-self: flex-end;
 }
 
 /* Markdown in Messages */
-.io-message strong { 
-  font-weight: 700; 
-  color: #FFFFFF; 
+.io-message strong {
+  font-weight: 700;
+  color: #ffffff;
 }
 
-.io-message em { 
-  font-style: italic; 
-  color: #FF6BA3; 
+.io-message em {
+  font-style: italic;
+  color: #ff6ba3;
 }
 
-.io-message ul, 
-.io-message ol { 
-  margin: 8px 0; 
-  padding-left: 20px; 
+.io-message ul,
+.io-message ol {
+  margin: 8px 0;
+  padding-left: 20px;
 }
 
-.io-message li { 
-  margin: 4px 0; 
-  line-height: 1.5; 
+.io-message li {
+  margin: 4px 0;
+  line-height: 1.5;
 }
 
-.io-message p { 
-  margin: 8px 0; 
+.io-message p {
+  margin: 8px 0;
 }
 
-.io-message a { 
-  color: #FF127F !important; 
-  text-decoration: underline; 
-  word-break: break-all; 
+.io-message a {
+  color: #ff127f !important;
+  text-decoration: underline;
+  word-break: break-all;
 }
 
 .io-message code {
@@ -278,7 +434,7 @@
 }
 
 .io-message pre {
-  background: #1A1A1A;
+  background: #1a1a1a;
   padding: 10px;
   border-radius: 8px;
   overflow-x: auto;
@@ -287,49 +443,67 @@
   font-size: 0.9em;
 }
 
-/* Appointment Form Inputs */
+/* Appointment Form - Better responsive form layout */
 .io-appointment-form {
-  background: #1A1A1A;
+  background: #1a1a1a;
   padding: 14px;
   border-radius: 12px;
   border: 1px dashed rgba(255, 18, 127, 0.3);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 8px 0;
 }
 
 .io-form-input,
 .io-form-input .ant-input,
 .io-form-input .ant-picker {
-  background: #0F0F0F !important;
+  background: #0f0f0f !important;
   border: 1px solid rgba(255, 18, 127, 0.4) !important;
   color: white !important;
   border-radius: 8px !important;
-  height: 36px !important;
+  height: 40px !important;
+  font-size: 14px !important;
+  padding: 8px 12px !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.io-form-input:focus,
+.io-form-input .ant-input:focus,
+.io-form-input .ant-picker:focus {
+  border-color: #ff127f !important;
 }
 
 .io-form-input::placeholder,
 .io-form-input .ant-input::placeholder {
-  color: #888 !important;
+  color: #666 !important;
 }
 
 .io-confirm-btn {
-  background: #FF127F !important;
+  background: #ff127f !important;
   border: none !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   border-radius: 8px !important;
-  height: 36px !important;
+  height: 40px !important;
   font-weight: 600 !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
 }
 
 .io-confirm-btn:hover {
-  background: #E00B6F !important;
+  background: #e00b6f !important;
   transform: translateY(-1px) !important;
 }
 
-/* Manual Comparison Form - Clean Inputs */
+.io-confirm-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* Manual Comparison Form - Improved form styling and responsiveness */
 .io-manual-form-container {
   padding: 16px;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 .io-manual-input,
@@ -337,25 +511,33 @@
 .io-manual-input .ant-picker,
 .io-manual-input .ant-input-number,
 .io-manual-input .ant-input-number-input {
-  background: #1A1A1A !important;
+  background: #1a1a1a !important;
   border: 1px solid #444 !important;
   color: white !important;
   border-radius: 8px !important;
+  font-size: 14px !important;
+}
+
+.io-manual-input:focus,
+.io-manual-input .ant-input:focus,
+.io-manual-input .ant-picker:focus,
+.io-manual-input .ant-input-number:focus,
+.io-manual-input .ant-input-number-input:focus {
+  border-color: #ff127f !important;
 }
 
 .io-manual-input::placeholder,
 .io-manual-input .ant-input::placeholder {
-  color: #888 !important;
+  color: #666 !important;
 }
 
 .io-manual-input .ant-picker-input > input {
   color: white !important;
 }
 
-/* FIX: DatePicker Placeholder Text ("Select date") - Now White */
 .io-manual-input .ant-picker-input > input::placeholder {
-  color: white !important;
-  opacity: 0.7 !important;
+  color: #666 !important;
+  opacity: 1 !important;
 }
 
 /* Tax Inclusive Checkbox */
@@ -368,28 +550,29 @@
 }
 
 .io-manual-checkbox .ant-checkbox-inner {
-  background: #1A1A1A !important;
+  background: #1a1a1a !important;
   border-color: #555 !important;
 }
 
 .io-manual-checkbox .ant-checkbox-checked .ant-checkbox-inner {
-  background: #FF127F !important;
-  border-color: #FF127F !important;
+  background: #ff127f !important;
+  border-color: #ff127f !important;
 }
 
 .io-manual-checkbox .ant-checkbox-checked::after {
-  border-color: #FF127F !important;
+  border-color: #ff127f !important;
 }
 
 .ant-form-item-label > label {
   color: #ccc !important;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 13px !important;
+  font-weight: 500 !important;
 }
 
-/* Calculate Savings Button - Pink Theme */
+/* Calculate Savings Button */
+.io-manual-form-button,
 .io-manual-form-container .ant-btn-primary {
-  background: #FF127F !important;
+  background: #ff127f !important;
   border: none !important;
   color: white !important;
   border-radius: 8px !important;
@@ -398,19 +581,22 @@
   font-size: 14px !important;
   box-shadow: 0 4px 12px rgba(255, 18, 127, 0.3) !important;
   transition: all 0.3s ease !important;
+  width: 100% !important;
 }
 
+.io-manual-form-button:hover,
 .io-manual-form-container .ant-btn-primary:hover {
-  background: #E00B6F !important;
+  background: #e00b6f !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 16px rgba(255, 18, 127, 0.4) !important;
 }
 
+.io-manual-form-button:active,
 .io-manual-form-container .ant-btn-primary:active {
   transform: translateY(0) !important;
 }
 
-/* DatePicker Popup - WHITE BACKGROUND, BLACK TEXT */
+/* DatePicker Popup - Enhanced responsive positioning */
 .io-custom-date-picker {
   z-index: 2147483649 !important;
 }
@@ -448,7 +634,7 @@
 .io-custom-date-picker .ant-picker-cell-selected .ant-picker-cell-inner,
 .io-custom-date-picker .ant-picker-cell-range-start .ant-picker-cell-inner,
 .io-custom-date-picker .ant-picker-cell-range-end .ant-picker-cell-inner {
-  background: #FF127F !important;
+  background: #ff127f !important;
   color: white !important;
 }
 
@@ -458,13 +644,13 @@
 }
 
 .io-custom-date-picker .ant-btn-primary {
-  background: #FF127F !important;
+  background: #ff127f !important;
   border: none !important;
   color: white !important;
 }
 
 .io-custom-date-picker .ant-btn-primary:hover {
-  background: #E00B6F !important;
+  background: #e00b6f !important;
 }
 
 @media (max-width: 768px) {
@@ -475,18 +661,19 @@
   }
 }
 
-/* Chat Input Area */
+/* Chat Input Area - Improved input section responsiveness */
 .io-chat-input {
   display: flex;
   padding: 12px;
-  background: #0A0A0A;
+  background: #0a0a0a;
   border-top: 1px solid rgba(255, 18, 127, 0.2);
   gap: 8px;
   align-items: flex-end;
+  flex-shrink: 0;
 }
 
 .io-chat-textarea {
-  background: #1A1A1A !important;
+  background: #1a1a1a !important;
   border: 1px solid rgba(255, 18, 127, 0.4) !important;
   color: white !important;
   border-radius: 12px !important;
@@ -495,6 +682,13 @@
   padding: 10px 12px !important;
   flex: 1;
   min-width: 0;
+  max-height: 80px !important;
+  line-height: 1.4 !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.io-chat-textarea:focus {
+  border-color: #ff127f !important;
 }
 
 .io-chat-textarea::placeholder {
@@ -505,7 +699,7 @@
 .io-attach-btn {
   background: transparent !important;
   border: 1px solid rgba(255, 18, 127, 0.4) !important;
-  color: #FF127F !important;
+  color: #ff127f !important;
   border-radius: 50%;
   width: 40px !important;
   height: 40px !important;
@@ -513,12 +707,18 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .io-attach-btn:hover {
   background: rgba(255, 18, 127, 0.2) !important;
   color: white !important;
   transform: scale(1.08);
+}
+
+.io-attach-btn:active {
+  transform: scale(0.95);
 }
 
 /* Send Button */
@@ -534,11 +734,18 @@
   justify-content: center;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(255, 18, 127, 0.4);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .io-send-btn:hover {
   background: rgb(230, 0, 110) !important;
   transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(255, 18, 127, 0.6);
+}
+
+.io-send-btn:active {
+  transform: scale(0.95);
 }
 
 /* Loading */
@@ -546,48 +753,62 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #FF127F;
+  color: #ff127f;
   font-size: 13px;
-  padding: 8px 0;
+  padding: 12px 0;
   font-weight: 500;
 }
 
-/* Comparison Results - White Text in Table */
+/* Comparison Results - Enhanced table responsiveness */
 .io-comparison-results {
-  margin-top: 20px;
+  margin-top: 16px;
   padding: 16px;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 12px;
   border: 1px solid rgba(255, 18, 127, 0.3);
 }
 
 .io-comparison-results h4 {
-  color: #FF127F;
+  color: #ff127f;
   margin-bottom: 16px;
   text-align: center;
+  font-size: 15px;
 }
 
 .io-comparison-results table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
-  font-size: 13px;
+  font-size: 12px;
+  overflow-x: auto;
 }
 
 .io-comparison-results th,
 .io-comparison-results td {
-  padding: 10px;
+  padding: 10px 8px;
   text-align: center;
   border: 1px solid #444;
   color: white !important;
+  word-break: break-word;
 }
 
 .io-comparison-results th {
   background: #222;
-  color: #FF127F !important;
+  color: #ff127f !important;
   font-weight: 600;
 }
 
 .io-comparison-results td {
-  background: #1A1A1A;
+  background: #1a1a1a;
+}
+
+@media (max-width: 480px) {
+  .io-comparison-results table {
+    font-size: 11px;
+  }
+
+  .io-comparison-results th,
+  .io-comparison-results td {
+    padding: 8px 4px;
+  }
 }
