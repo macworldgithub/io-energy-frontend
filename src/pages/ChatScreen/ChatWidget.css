@@ -51,7 +51,8 @@
   }
 
   .io-chart-container canvas {
-    max-height: 240px;
+    /* increased max-height from 240px to 320px for better mobile display */
+    max-height: 320px;
   }
 }
 
@@ -64,7 +65,8 @@
   }
 
   .io-chart-container canvas {
-    max-height: 200px;
+    /* increased max-height from 200px to 300px for better visibility on small screens */
+    max-height: 300px;
   }
 
   .io-chart-container > div:first-child {
