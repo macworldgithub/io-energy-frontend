@@ -1579,7 +1579,7 @@ export default function ChatWidget() {
             <button
               onClick={() => fileInputRef.current?.click()}
               className="io-attach-btn"
-              title="Attach bill"
+              title="Attach PDF bill"
             >
               <PaperClipOutlined />
             </button>
@@ -1590,9 +1590,21 @@ export default function ChatWidget() {
               ref={fileInputRef}
               type="file"
               hidden
-              onChange={(e) =>
-                e.target.files?.[0] && handleUploadBill(e.target.files[0])
-              }
+              accept="application/pdf,.pdf"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  // Optional: extra client-side validation
+                  if (
+                    file.type !== "application/pdf" &&
+                    !file.name.toLowerCase().endsWith(".pdf")
+                  ) {
+                    message.error("Please upload a PDF file only.");
+                    return;
+                  }
+                  handleUploadBill(file);
+                }
+              }}
             />
           </div>
         </div>
