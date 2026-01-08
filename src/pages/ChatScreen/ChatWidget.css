@@ -20,7 +20,7 @@
   display: block;
   margin-top: 8px;
   width: 90%;
-  max-width: 360px;
+  max-width: 320px;
 }
 
 /* Ensure canvas is responsive */
@@ -34,7 +34,7 @@
 @media (max-width: 1024px) {
   .io-chart-container {
     width: 85%;
-    max-width: 340px;
+    max-width: 320px;
   }
 
   .io-chart-container canvas {
