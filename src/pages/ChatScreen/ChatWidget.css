@@ -30,7 +30,7 @@
   width: 100% !important;
   height: auto !important;
   /* reduced max-height for smaller chart display */
-  max-height: 240px;
+  max-height: 360px;
 }
 
 .io-chart-container > div:first-child {
