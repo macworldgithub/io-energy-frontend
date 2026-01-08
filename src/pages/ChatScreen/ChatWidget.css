@@ -39,7 +39,7 @@
 }
 @media (max-width: 768px) {
   .io-chart-container {
-  width: calc(100% - 16px);
+  width:70%;
     max-width: none;      /* Remove max-width limit */
     margin-left: auto;
     margin-right: auto;
