@@ -1,3 +1,5 @@
+// "use client";
+
 // import { useState, useRef, useEffect } from "react";
 // import {
 //   Button,
@@ -95,27 +97,14 @@
 //     return DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
 //   };
 
-//   // const extractChartConfig = (text) => {
-//   //   const match = text.match(/\{.*type.*data.*\}/s);
-//   //   if (match) {
-//   //     try {
-//   //       return JSON.parse(match[0]);
-//   //     } catch {
-//   //       return null;
-//   //     }
-//   //   }
-//   //   return null;
-//   // };
 //   const extractChartConfig = (text) => {
 //     const chartBlockRegex = /===CHART===\s*(\{[\s\S]*?\})\s*===END_CHART===/;
 //     const match = text.match(chartBlockRegex);
 //     if (match) {
 //       try {
 //         const config = JSON.parse(match[1].trim());
-//         // Remove the entire chart block from the text before rendering
 //         const cleanedText = text.replace(chartBlockRegex, "").trim();
-//         // You can store cleanedText if needed, but here we just return config
-//         return config;
+//         return { config, cleanedText };
 //       } catch (e) {
 //         console.error("Failed to parse chart config:", e);
 //         return null;
@@ -123,6 +112,7 @@
 //     }
 //     return null;
 //   };
+
 //   const handleOpenChat = async () => {
 //     setIsOpen(true);
 
@@ -204,7 +194,9 @@
 //       const response = await axios.post(
 //         `${SERVER_URL}/upload_bill?session_id=${sessionId}&consent=true`,
 //         formData,
-//         { headers: { "Content-Type": "multipart/form-data" } }
+//         {
+//           headers: { "Content-Type": "multipart/form-data" },
+//         }
 //       );
 
 //       setMessages((prev) => [
@@ -275,7 +267,9 @@
 //     try {
 //       const response = await axios.post(
 //         `${SERVER_URL}/comparisons/${comparisonId}/calculate`,
-//         { pricing_version: "latest" }
+//         {
+//           pricing_version: "latest",
+//         }
 //       );
 
 //       setComparisonResults(response.data);
@@ -416,7 +410,11 @@
 //       {!isOpen && (
 //         <div className="io-chat-button-container" onClick={handleOpenChat}>
 //           <button className="io-chat-button">
-//             <img src={LOGO_URL} alt="iO" className="io-chat-icon-logo" />
+//             <img
+//               src={LOGO_URL || "/placeholder.svg"}
+//               alt="iO"
+//               className="io-chat-icon-logo"
+//             />
 //             <span className="io-chat-text">How can I help?</span>
 //           </button>
 //         </div>
@@ -426,7 +424,11 @@
 //         <div className="io-chat-popup">
 //           <div className="io-chat-header">
 //             <div className="io-header-left">
-//               <img src={LOGO_URL} alt="iO Energy" className="io-logo" />
+//               <img
+//                 src={LOGO_URL || "/placeholder.svg"}
+//                 alt="iO Energy"
+//                 className="io-logo"
+//               />
 //               <span>iO Energy Assistant</span>
 //             </div>
 //             <CloseOutlined
@@ -449,22 +451,18 @@
 //             {activeTab === "chat" && (
 //               <>
 //                 {messages.map((msg, i) => {
-//                   const chartConfig = extractChartConfig(msg.text);
-//                   const displayText = chartConfig
-//                     ? msg.text
-//                         .replace(
-//                           /===CHART===\s*\{[\s\S]*?\}\s*===END_CHART===/,
-//                           ""
-//                         )
-//                         .trim()
+//                   const chartData = extractChartConfig(msg.text);
+//                   const displayText = chartData
+//                     ? chartData.cleanedText
 //                     : msg.text;
+//                   const chartConfig = chartData ? chartData.config : null;
 
 //                   return (
 //                     <div key={i} className={`io-message-wrapper ${msg.sender}`}>
 //                       {msg.sender === "bot" && (
 //                         <div className="io-bot-avatar">
 //                           <img
-//                             src={LOGO_URL}
+//                             src={LOGO_URL || "/placeholder.svg"}
 //                             alt="iO"
 //                             className="io-bot-logo"
 //                           />
@@ -529,7 +527,11 @@
 //                 {showAppointmentPicker && (
 //                   <div className="io-message-wrapper bot">
 //                     <div className="io-bot-avatar">
-//                       <img src={LOGO_URL} alt="iO" className="io-bot-logo" />
+//                       <img
+//                         src={LOGO_URL || "/placeholder.svg"}
+//                         alt="iO"
+//                         className="io-bot-logo"
+//                       />
 //                     </div>
 //                     <div className="io-appointment-form">
 //                       <Input
@@ -639,24 +641,24 @@
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
-//                       style={{ width: "100%" }}
+//                       step={0.1}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item name="usage_peak_kwh" label="Peak Usage (kWh)">
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
-//                       style={{ width: "100%" }}
+//                       step={0.1}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
 //                     name="usage_offpeak_kwh"
-//                     label="Off-Peak Usage (kWh)"
+//                     label="Off-peak Usage (kWh)"
 //                   >
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
-//                       style={{ width: "100%" }}
+//                       step={0.1}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
@@ -666,14 +668,14 @@
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
-//                       style={{ width: "100%" }}
+//                       step={0.1}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item name="solar_export_kwh" label="Solar Export (kWh)">
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
-//                       style={{ width: "100%" }}
+//                       step={0.1}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
@@ -683,121 +685,122 @@
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
-//                       style={{ width: "100%" }}
+//                       step={0.1}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
 //                     name="current_supply_daily"
-//                     label="Daily Supply Charge ($)"
+//                     label="Current Supply Daily (AUD)"
 //                   >
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
 //                       step={0.01}
-//                       style={{ width: "100%" }}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
 //                     name="current_unit_rate_flat"
-//                     label="Flat Rate (c/kWh)"
+//                     label="Current Unit Rate (AUD/kWh)"
 //                   >
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
 //                       step={0.01}
-//                       style={{ width: "100%" }}
 //                     />
 //                   </Form.Item>
-//                   <Form.Item name="current_peak_rate" label="Peak Rate (c/kWh)">
+//                   <Form.Item
+//                     name="current_peak_rate"
+//                     label="Current Peak Rate (AUD/kWh)"
+//                   >
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
 //                       step={0.01}
-//                       style={{ width: "100%" }}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
 //                     name="current_offpeak_rate"
-//                     label="Off-Peak Rate (c/kWh)"
+//                     label="Current Off-peak Rate (AUD/kWh)"
 //                   >
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
 //                       step={0.01}
-//                       style={{ width: "100%" }}
 //                     />
 //                   </Form.Item>
 //                   <Form.Item
 //                     name="current_shoulder_rate"
-//                     label="Shoulder Rate (c/kWh)"
+//                     label="Current Shoulder Rate (AUD/kWh)"
 //                   >
 //                     <InputNumber
 //                       className="io-manual-input"
 //                       min={0}
 //                       step={0.01}
-//                       style={{ width: "100%" }}
 //                     />
 //                   </Form.Item>
-//                   <Button
-//                     type="primary"
-//                     htmlType="submit"
-//                     loading={loading}
-//                     block
-//                   >
-//                     Calculate Savings
-//                   </Button>
+//                   <Form.Item>
+//                     <Button
+//                       type="primary"
+//                       htmlType="submit"
+//                       loading={loading}
+//                       className="io-manual-form-button"
+//                     >
+//                       Calculate Savings
+//                     </Button>
+//                   </Form.Item>
 //                 </Form>
 
 //                 {comparisonResults && renderComparisonResults()}
 //               </div>
 //             )}
-
 //             <div ref={messagesEndRef} />
 //           </div>
 
-//           {activeTab === "chat" && !showAppointmentPicker && (
-//             <div className="io-chat-input">
-//               <input
-//                 type="file"
-//                 ref={fileInputRef}
-//                 style={{ display: "none" }}
-//                 accept=".pdf"
-//                 onChange={(e) => {
-//                   if (e.target.files?.[0]) {
-//                     handleUploadBill(e.target.files[0]);
-//                     e.target.value = "";
+//           <div className="io-chat-input">
+//             <Input.TextArea
+//               value={input}
+//               onChange={(e) => setInput(e.target.value)}
+//               onPressEnter={(e) => {
+//                 if (!e.shiftKey) {
+//                   e.preventDefault();
+//                   handleSend();
+//                 }
+//               }}
+//               placeholder="Ask me anything..."
+//               className="io-chat-textarea"
+//               rows={1}
+//             />
+//             <button
+//               onClick={() => fileInputRef.current?.click()}
+//               className="io-attach-btn"
+//               title="Attach PDF bill"
+//             >
+//               <PaperClipOutlined />
+//             </button>
+//             <button onClick={() => handleSend()} className="io-send-btn">
+//               <SendOutlined />
+//             </button>
+//             <input
+//               ref={fileInputRef}
+//               type="file"
+//               hidden
+//               accept="application/pdf,.pdf"
+//               onChange={(e) => {
+//                 const file = e.target.files?.[0];
+//                 if (file) {
+//                   // Optional: extra client-side validation
+//                   if (
+//                     file.type !== "application/pdf" &&
+//                     !file.name.toLowerCase().endsWith(".pdf")
+//                   ) {
+//                     message.error("Please upload a PDF file only.");
+//                     return;
 //                   }
-//                 }}
-//               />
-//               <Button
-//                 icon={<PaperClipOutlined />}
-//                 className="io-attach-btn"
-//                 onClick={() => fileInputRef.current?.click()}
-//                 disabled={loading}
-//                 title="Upload bill"
-//               />
-//               <Input.TextArea
-//                 placeholder="Ask about solar, plans, or savings..."
-//                 value={input}
-//                 onChange={(e) => setInput(e.target.value)}
-//                 onPressEnter={(e) => {
-//                   if (!e.shiftKey) {
-//                     e.preventDefault();
-//                     handleSend();
-//                   }
-//                 }}
-//                 disabled={loading}
-//                 autoSize={{ minRows: 1, maxRows: 4 }}
-//                 className="io-chat-textarea"
-//               />
-//               <Button
-//                 icon={<SendOutlined />}
-//                 className="io-send-btn"
-//                 onClick={() => handleSend()}
-//                 disabled={loading || !input.trim()}
-//               />
-//             </div>
-//           )}
+//                   handleUploadBill(file);
+//                 }
+//               }}
+//             />
+//           </div>
 //         </div>
 //       )}
 //     </div>
@@ -805,7 +808,6 @@
 // }
 
 "use client";
-
 import { useState, useRef, useEffect } from "react";
 import {
   Button,
@@ -840,7 +842,6 @@ import {
   BarController,
 } from "chart.js";
 import "./ChatWidget.css";
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -850,10 +851,8 @@ ChartJS.register(
   Legend,
   BarController
 );
-
 const LOGO_URL =
   "https://na1.hubspot-logos.com/80ea9a8f-ce90-4028-aceb-97b72755cd5b";
-
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -866,7 +865,6 @@ export default function ChatWidget() {
   const [activeTab, setActiveTab] = useState("chat");
   const [comparisonId, setComparisonId] = useState(null);
   const [comparisonResults, setComparisonResults] = useState(null);
-
   // Appointment form
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -874,35 +872,30 @@ export default function ChatWidget() {
   const [postcode, setPostcode] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-
   // Manual form
   const [manualForm] = Form.useForm();
-
+  // Invoice form
+  const [invoiceForm] = Form.useForm();
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, [messages, loading, showAppointmentPicker, comparisonResults]);
-
   marked.setOptions({
     gfm: true,
     breaks: true,
     headerIds: false,
     mangle: false,
   });
-
   const parseMessage = (text) => {
     if (!text) return "";
     const html = marked.parse(text);
     return DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
   };
-
   const extractChartConfig = (text) => {
     const chartBlockRegex = /===CHART===\s*(\{[\s\S]*?\})\s*===END_CHART===/;
     const match = text.match(chartBlockRegex);
@@ -918,10 +911,8 @@ export default function ChatWidget() {
     }
     return null;
   };
-
   const handleOpenChat = async () => {
     setIsOpen(true);
-
     if (!sessionId) {
       try {
         const response = await axios.post(`${SERVER_URL}/query`, { query: "" });
@@ -937,7 +928,6 @@ export default function ChatWidget() {
         ]);
       }
     }
-
     if (!comparisonId) {
       try {
         const compResponse = await axios.post(`${SERVER_URL}/comparisons`);
@@ -947,29 +937,24 @@ export default function ChatWidget() {
       }
     }
   };
-
   const handleSend = async (overrideInput = null) => {
     const messageToSend = overrideInput || input.trim();
     if (!messageToSend) return;
-
     const userMessage = { text: messageToSend, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
     setSuggestions([]);
-
     try {
       const response = await axios.post(`${SERVER_URL}/query`, {
         query: messageToSend,
         session_id: sessionId,
       });
-
       const botMessage = {
         text: response.data.message,
         sender: "bot",
         showButtons: response.data.message.includes("preferred day"),
       };
-
       setMessages((prev) => [...prev, botMessage]);
       setShowAppointmentPicker(botMessage.showButtons);
       setSuggestions(response.data.suggestions || []);
@@ -985,17 +970,14 @@ export default function ChatWidget() {
       setLoading(false);
     }
   };
-
   const handleUploadBill = async (file) => {
     if (!sessionId) {
       message.error("Session not initialized. Please wait a moment.");
       return false;
     }
-
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
-
     try {
       const response = await axios.post(
         `${SERVER_URL}/upload_bill?session_id=${sessionId}&consent=true`,
@@ -1004,7 +986,6 @@ export default function ChatWidget() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
       setMessages((prev) => [
         ...prev,
         { text: response.data.message, sender: "bot" },
@@ -1015,18 +996,14 @@ export default function ChatWidget() {
     } finally {
       setLoading(false);
     }
-
     return false;
   };
-
   const handleManualInput = async (values) => {
     if (!comparisonId) {
       message.error("Comparison not initialized.");
       return;
     }
-
     setLoading(true);
-
     try {
       const manualInput = {
         periods: [
@@ -1050,12 +1027,10 @@ export default function ChatWidget() {
           },
         ],
       };
-
       await axios.post(
         `${SERVER_URL}/comparisons/${comparisonId}/manual_inputs`,
         manualInput
       );
-
       await handleCalculateComparison();
       manualForm.resetFields();
     } catch (error) {
@@ -1064,12 +1039,46 @@ export default function ChatWidget() {
       setLoading(false);
     }
   };
-
+  const handleInvoiceInput = async (values) => {
+    if (!comparisonId) {
+      message.error("Comparison not initialized.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const invoiceInput = {
+        periods: [
+          {
+            period: {
+              start_date: values.start_date.format("YYYY-MM-DD"),
+              end_date: values.end_date.format("YYYY-MM-DD"),
+              tax_inclusive: values.tax_inclusive || false,
+            },
+            total_cost: values.total_cost || 0,
+            usage_total_kwh: values.usage_total_kwh || 0,
+            usage_peak_kwh: values.usage_peak_kwh || 0,
+            usage_offpeak_kwh: values.usage_offpeak_kwh || 0,
+            usage_shoulder_kwh: values.usage_shoulder_kwh || 0,
+            solar_export_kwh: values.solar_export_kwh || 0,
+            controlled_load_kwh: values.controlled_load_kwh || 0,
+          },
+        ],
+      };
+      await axios.post(
+        `${SERVER_URL}/comparisons/${comparisonId}/invoice_inputs`,
+        invoiceInput
+      );
+      await handleCalculateComparison();
+      invoiceForm.resetFields();
+    } catch (error) {
+      message.error("Failed to submit invoice inputs.");
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleCalculateComparison = async () => {
     if (!comparisonId) return;
-
     setLoading(true);
-
     try {
       const response = await axios.post(
         `${SERVER_URL}/comparisons/${comparisonId}/calculate`,
@@ -1077,7 +1086,6 @@ export default function ChatWidget() {
           pricing_version: "latest",
         }
       );
-
       setComparisonResults(response.data);
     } catch (error) {
       message.error("Failed to calculate comparison.");
@@ -1085,7 +1093,6 @@ export default function ChatWidget() {
       setLoading(false);
     }
   };
-
   const handleBookAppointment = async () => {
     if (!fullName || !email || !phone || !postcode || !selectedDate) {
       setMessages((prev) => [
@@ -1097,15 +1104,12 @@ export default function ChatWidget() {
       ]);
       return;
     }
-
     setLoading(true);
-
     const preferredDay = selectedDate.format("YYYY-MM-DD");
     const preferredTime =
       isMobile && selectedTime
         ? selectedTime.format("HH:mm")
         : selectedDate.format("HH:mm");
-
     try {
       const response = await axios.post(`${SERVER_URL}/book_appointment`, {
         session_id: sessionId,
@@ -1116,12 +1120,10 @@ export default function ChatWidget() {
         phone,
         postcode,
       });
-
       setMessages((prev) => [
         ...prev,
         { text: response.data.message, sender: "bot" },
       ]);
-
       setShowAppointmentPicker(false);
       resetForm();
     } catch (error) {
@@ -1132,7 +1134,6 @@ export default function ChatWidget() {
       setLoading(false);
     }
   };
-
   const resetForm = () => {
     setFullName("");
     setEmail("");
@@ -1141,7 +1142,6 @@ export default function ChatWidget() {
     setSelectedDate(null);
     setSelectedTime(null);
   };
-
   const handleConfirm = () => {
     if (isMobile && !selectedTime) {
       setMessages((prev) => [
@@ -1152,10 +1152,8 @@ export default function ChatWidget() {
     }
     handleBookAppointment();
   };
-
   const renderComparisonResults = () => {
     if (!comparisonResults || !comparisonResults.aggregate) return null;
-
     const chartConfig = {
       type: "bar",
       data: {
@@ -1173,7 +1171,6 @@ export default function ChatWidget() {
       },
       options: { scales: { y: { beginAtZero: true } } },
     };
-
     return (
       <div className="io-comparison-results">
         <h4>
@@ -1210,7 +1207,6 @@ export default function ChatWidget() {
       </div>
     );
   };
-
   return (
     <div className="io-chat-widget">
       {!isOpen && (
@@ -1225,7 +1221,6 @@ export default function ChatWidget() {
           </button>
         </div>
       )}
-
       {isOpen && (
         <div className="io-chat-popup">
           <div className="io-chat-header">
@@ -1242,7 +1237,6 @@ export default function ChatWidget() {
               onClick={() => setIsOpen(false)}
             />
           </div>
-
           <Tabs
             activeKey={activeTab}
             onChange={setActiveTab}
@@ -1251,8 +1245,8 @@ export default function ChatWidget() {
           >
             <Tabs.TabPane tab="Chat" key="chat" />
             <Tabs.TabPane tab="Manual Comparison" key="manual-comparison" />
+            <Tabs.TabPane tab="Invoice Comparison" key="invoice-comparison" />
           </Tabs>
-
           <div className="io-chat-messages">
             {activeTab === "chat" && (
               <>
@@ -1262,7 +1256,6 @@ export default function ChatWidget() {
                     ? chartData.cleanedText
                     : msg.text;
                   const chartConfig = chartData ? chartData.config : null;
-
                   return (
                     <div key={i} className={`io-message-wrapper ${msg.sender}`}>
                       {msg.sender === "bot" && (
@@ -1329,7 +1322,6 @@ export default function ChatWidget() {
                     </div>
                   );
                 })}
-
                 {showAppointmentPicker && (
                   <div className="io-message-wrapper bot">
                     <div className="io-bot-avatar">
@@ -1401,7 +1393,6 @@ export default function ChatWidget() {
                     </div>
                   </div>
                 )}
-
                 {loading && (
                   <div className="io-loading">
                     <Spin size="small" />
@@ -1410,7 +1401,6 @@ export default function ChatWidget() {
                 )}
               </>
             )}
-
             {activeTab === "manual-comparison" && (
               <div className="io-manual-form-container">
                 <Form
@@ -1555,13 +1545,115 @@ export default function ChatWidget() {
                     </Button>
                   </Form.Item>
                 </Form>
-
+                {comparisonResults && renderComparisonResults()}
+              </div>
+            )}
+            {activeTab === "invoice-comparison" && (
+              <div className="io-manual-form-container">
+                <Form
+                  form={invoiceForm}
+                  onFinish={handleInvoiceInput}
+                  layout="vertical"
+                >
+                  <Form.Item
+                    name="start_date"
+                    label="Start Date"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker
+                      className="io-manual-input"
+                      popupClassName="io-custom-date-picker"
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="end_date"
+                    label="End Date"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker
+                      className="io-manual-input"
+                      popupClassName="io-custom-date-picker"
+                    />
+                  </Form.Item>
+                  <Form.Item name="tax_inclusive" valuePropName="checked">
+                    <Checkbox className="io-manual-checkbox">
+                      Tax Inclusive
+                    </Checkbox>
+                  </Form.Item>
+                  <Form.Item name="total_cost" label="Total Cost (AUD)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                    />
+                  </Form.Item>
+                  <Form.Item name="usage_total_kwh" label="Total Usage (kWh)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item name="usage_peak_kwh" label="Peak Usage (kWh)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="usage_offpeak_kwh"
+                    label="Off-peak Usage (kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="usage_shoulder_kwh"
+                    label="Shoulder Usage (kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item name="solar_export_kwh" label="Solar Export (kWh)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="controlled_load_kwh"
+                    label="Controlled Load (kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={loading}
+                      className="io-manual-form-button"
+                    >
+                      Calculate Savings
+                    </Button>
+                  </Form.Item>
+                </Form>
                 {comparisonResults && renderComparisonResults()}
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
-
           <div className="io-chat-input">
             <Input.TextArea
               value={input}
