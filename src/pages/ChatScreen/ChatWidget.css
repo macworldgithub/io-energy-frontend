@@ -18,20 +18,61 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: block;
-  /* left align chart and reduce size */
-  /* margin-left: 40px; */
   margin-top: 8px;
-  width: 70%;
-  max-width: 320px;
+  width: 90%;
+  max-width: 360px;
 }
 
 /* Ensure canvas is responsive */
 .io-chart-container canvas {
   width: 100% !important;
   height: auto !important;
-  /* reduced max-height for smaller chart display */
-  max-height: 240px;
+  max-height: 280px;
 }
+
+/* Added responsive breakpoints for chart container */
+@media (max-width: 1024px) {
+  .io-chart-container {
+    width: 85%;
+    max-width: 340px;
+  }
+
+  .io-chart-container canvas {
+    max-height: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .io-chart-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0 8px 0;
+    padding: 14px;
+  }
+
+  .io-chart-container canvas {
+    max-height: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .io-chart-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 16px 0 8px 0;
+    padding: 12px;
+  }
+
+  .io-chart-container canvas {
+    max-height: 200px;
+  }
+
+  .io-chart-container > div:first-child {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+}
+
 
 .io-chart-container > div:first-child {
   text-align: center;
