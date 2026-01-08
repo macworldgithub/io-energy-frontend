@@ -18,6 +18,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: block;
+  /* left align chart and reduce size */
+  /* margin-left: 40px; */
   margin-top: 8px;
   width: 70%;
   max-width: 320px;
@@ -27,6 +29,7 @@
 .io-chart-container canvas {
   width: 100% !important;
   height: auto !important;
+  /* reduced max-height for smaller chart display */
   max-height: 240px;
 }
 
@@ -115,11 +118,8 @@
   white-space: nowrap;
 }
 
-/* Chat Popup - Fixed to bottom-left on all devices */
+/* Chat Popup - Enhanced responsive design */
 .io-chat-popup {
-  position: fixed !important;
-  bottom: 100px; /* Space above the floating button */
-  left: 20px;
   width: 380px;
   height: 520px;
   background: #0a0a0a;
@@ -131,17 +131,13 @@
   border: 1px solid rgba(255, 18, 127, 0.2);
 }
 
-/* Tablet */
 @media (max-width: 1024px) {
   .io-chat-popup {
     width: 360px;
     height: 500px;
-    bottom: 100px;
-    left: 20px;
   }
 }
 
-/* Mobile - Full width but still anchored to bottom-left */
 @media (max-width: 768px) {
   .io-chat-widget {
     bottom: 16px;
@@ -150,13 +146,13 @@
   }
 
   .io-chat-popup {
-    position: fixed !important;
-    bottom: 90px; /* Above the button */
+    width: calc(100vw - 32px);
     left: 16px !important;
     right: 16px !important;
-    width: auto !important;
     height: 70vh;
     max-height: 600px;
+    position: fixed;
+    bottom: 80px;
     border-radius: 14px;
   }
 
@@ -165,6 +161,10 @@
     padding: 12px 14px;
     font-size: 13px;
     gap: 8px;
+  }
+
+  .io-chat-button-container {
+    width: 100%;
   }
 
   .io-chat-icon-logo {
@@ -181,13 +181,11 @@
   }
 
   .io-chat-popup {
-    position: fixed !important;
-    bottom: 80px;
+    width: calc(100vw - 24px);
     left: 12px !important;
     right: 12px !important;
-    width: auto !important;
     height: 80vh;
-    max-height: 600px;
+    bottom: 70px;
     border-radius: 12px;
   }
 
@@ -203,7 +201,7 @@
   }
 }
 
-/* Header */
+/* Header - Better padding on mobile */
 .io-chat-header {
   background: linear-gradient(135deg, rgb(255, 18, 127), rgb(200, 0, 100));
   color: white;
@@ -257,7 +255,7 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Tabs */
+/* Tabs - Better responsive tab styling */
 .io-custom-tabs {
   background: #0a0a0a !important;
 }
@@ -303,7 +301,7 @@
   }
 }
 
-/* Messages Area */
+/* Messages Area - Improved scrolling and spacing */
 .io-chat-messages {
   flex: 1;
   padding: 16px;
@@ -338,6 +336,7 @@
   margin-bottom: 8px;
   align-items: flex-start;
   gap: 8px;
+  /* make wrapper flex-column to stack chart below message */
   flex-direction: column;
 }
 
@@ -375,6 +374,7 @@
   line-height: 1.5;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  /* add align-self to proper position message content */
   align-self: flex-start;
 }
 
@@ -390,6 +390,7 @@
   color: white;
   font-weight: 500;
   box-shadow: 0 2px 6px rgba(255, 18, 127, 0.3);
+  /* align user message to right */
   align-self: flex-end;
 }
 
@@ -442,7 +443,7 @@
   font-size: 0.9em;
 }
 
-/* Appointment Form */
+/* Appointment Form - Better responsive form layout */
 .io-appointment-form {
   background: #1a1a1a;
   padding: 14px;
@@ -498,7 +499,7 @@
   transform: translateY(0) !important;
 }
 
-/* Manual Comparison Form */
+/* Manual Comparison Form - Improved form styling and responsiveness */
 .io-manual-form-container {
   padding: 16px;
   overflow-y: auto;
@@ -595,7 +596,7 @@
   transform: translateY(0) !important;
 }
 
-/* DatePicker Popup */
+/* DatePicker Popup - Enhanced responsive positioning */
 .io-custom-date-picker {
   z-index: 2147483649 !important;
 }
@@ -660,7 +661,7 @@
   }
 }
 
-/* Chat Input Area */
+/* Chat Input Area - Improved input section responsiveness */
 .io-chat-input {
   display: flex;
   padding: 12px;
@@ -758,7 +759,7 @@
   font-weight: 500;
 }
 
-/* Comparison Results */
+/* Comparison Results - Enhanced table responsiveness */
 .io-comparison-results {
   margin-top: 16px;
   padding: 16px;
