@@ -9,9 +9,7 @@
 
 .io-chart-container {
   margin: 20px 8px 8px 8px;
-  /* width: calc(100% - 16px); */
-  width: 100%;
-
+  width: calc(100% - 16px);
   max-width: 100%;
   background: #1a1a1a;
   border-radius: 12px;
@@ -32,7 +30,7 @@
   width: 100% !important;
   height: auto !important;
   /* reduced max-height for smaller chart display */
-  max-height: 360px;
+  max-height: 240px;
 }
 
 .io-chart-container > div:first-child {
