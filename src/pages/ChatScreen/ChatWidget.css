@@ -221,9 +221,9 @@
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
-  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
+/* Fixed selector: was invalid syntax before */
 .io-message.bot {
   background: #1A1A1A;
   color: #FFFFFF;
@@ -239,18 +239,44 @@
 }
 
 /* Markdown in Messages */
-.io-message strong { font-weight: 700; color: #FFFFFF; }
-.io-message em { font-style: italic; color: #FF6BA3; }
-.io-message ul, .io-message ol { margin: 8px 0; padding-left: 20px; }
-.io-message li { margin: 4px 0; line-height: 1.5; }
-.io-message p { margin: 8px 0; }
-.io-message a { color: #FF127F !important; text-decoration: underline; word-break: break-all; }
+.io-message strong { 
+  font-weight: 700; 
+  color: #FFFFFF; 
+}
+
+.io-message em { 
+  font-style: italic; 
+  color: #FF6BA3; 
+}
+
+.io-message ul, 
+.io-message ol { 
+  margin: 8px 0; 
+  padding-left: 20px; 
+}
+
+.io-message li { 
+  margin: 4px 0; 
+  line-height: 1.5; 
+}
+
+.io-message p { 
+  margin: 8px 0; 
+}
+
+.io-message a { 
+  color: #FF127F !important; 
+  text-decoration: underline; 
+  word-break: break-all; 
+}
+
 .io-message code {
   background: rgba(255, 18, 127, 0.15);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9em;
 }
+
 .io-message pre {
   background: #1A1A1A;
   padding: 10px;
@@ -259,28 +285,6 @@
   border: 1px solid rgba(255, 18, 127, 0.3);
   margin: 8px 0;
   font-size: 0.9em;
-}
-
-/* NEW: Chart inside bot message */
-.io-chart-container {
-  margin-top: 14px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 18, 127, 0.2);
-  max-height: 340px;
-  overflow: hidden;
-}
-
-.io-chart-container canvas {
-  max-width: 100% !important;
-  height: auto !important;
-  border-radius: 8px;
-}
-
-/* Extra padding when chart is present */
-.io-message:has(.io-chart-container) {
-  padding-bottom: 4px;
 }
 
 /* Appointment Form Inputs */
@@ -323,7 +327,7 @@
   transform: translateY(-1px) !important;
 }
 
-/* Manual Comparison Form */
+/* Manual Comparison Form - Clean Inputs */
 .io-manual-form-container {
   padding: 16px;
 }
@@ -348,11 +352,13 @@
   color: white !important;
 }
 
+/* FIX: DatePicker Placeholder Text ("Select date") - Now White */
 .io-manual-input .ant-picker-input > input::placeholder {
   color: white !important;
   opacity: 0.7 !important;
 }
 
+/* Tax Inclusive Checkbox */
 .io-manual-checkbox {
   color: #ffffff !important;
 }
@@ -381,6 +387,7 @@
   font-weight: 500;
 }
 
+/* Calculate Savings Button - Pink Theme */
 .io-manual-form-container .ant-btn-primary {
   background: #FF127F !important;
   border: none !important;
@@ -403,7 +410,7 @@
   transform: translateY(0) !important;
 }
 
-/* DatePicker Popup */
+/* DatePicker Popup - WHITE BACKGROUND, BLACK TEXT */
 .io-custom-date-picker {
   z-index: 2147483649 !important;
 }
@@ -545,7 +552,7 @@
   font-weight: 500;
 }
 
-/* Comparison Results (Manual Tab) */
+/* Comparison Results - White Text in Table */
 .io-comparison-results {
   margin-top: 20px;
   padding: 16px;

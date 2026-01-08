@@ -1065,7 +1065,8 @@ ChartJS.register(
   BarController
 );
 
-const LOGO_URL = "<your-logo-url-here>";
+const LOGO_URL =
+  "https://na1.hubspot-logos.com/80ea9a8f-ce90-4028-aceb-97b72755cd5b";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -1080,7 +1081,7 @@ export default function ChatWidget() {
   const [comparisonId, setComparisonId] = useState(null);
   const [comparisonResults, setComparisonResults] = useState(null);
 
-  // Appointment form fields
+  // Appointment form
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -1117,11 +1118,11 @@ export default function ChatWidget() {
   };
 
   const extractChartConfig = (text) => {
-    const match = text.match(/\{.*"type".*"data".*\}/s);
+    const match = text.match(/\{.*type.*data.*\}/s);
     if (match) {
       try {
         return JSON.parse(match[0]);
-      } catch (e) {
+      } catch {
         return null;
       }
     }
@@ -1133,18 +1134,9 @@ export default function ChatWidget() {
 
     if (!sessionId) {
       try {
-        const response = await axios.post(`${SERVER_URL}/start_session`, {
-          query: "",
-        });
+        const response = await axios.post(`${SERVER_URL}/query`, { query: "" });
         setSessionId(response.data.session_id);
-        setMessages([
-          {
-            text:
-              response.data.message ||
-              "Hello! How can I help you save on energy today?",
-            sender: "bot",
-          },
-        ]);
+        setMessages([{ text: response.data.message, sender: "bot" }]);
         setSuggestions(response.data.suggestions || []);
       } catch (error) {
         setMessages([
@@ -1158,9 +1150,7 @@ export default function ChatWidget() {
 
     if (!comparisonId) {
       try {
-        const compResponse = await axios.post(
-          `${SERVER_URL}/comparisons/create`
-        );
+        const compResponse = await axios.post(`${SERVER_URL}/comparisons`);
         setComparisonId(compResponse.data.comparison_id);
       } catch (error) {
         message.error("Failed to initialize comparison.");
@@ -1179,15 +1169,15 @@ export default function ChatWidget() {
     setSuggestions([]);
 
     try {
-      const response = await axios.post(`${SERVER_URL}/chat`, {
+      const response = await axios.post(`${SERVER_URL}/query`, {
         query: messageToSend,
         session_id: sessionId,
       });
 
       const botMessage = {
-        text: response.data.response || "",
+        text: response.data.message,
         sender: "bot",
-        showButtons: response.data.show_appointment || false,
+        showButtons: response.data.message.includes("preferred day"),
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -1206,11 +1196,10 @@ export default function ChatWidget() {
     }
   };
 
-  const handleUploadBill = async (e) => {
-    const file = e.target.files[0];
-    if (!file || !sessionId) {
-      message.error("Session not ready or no file selected.");
-      return;
+  const handleUploadBill = async (file) => {
+    if (!sessionId) {
+      message.error("Session not initialized. Please wait a moment.");
+      return false;
     }
 
     setLoading(true);
@@ -1226,20 +1215,16 @@ export default function ChatWidget() {
 
       setMessages((prev) => [
         ...prev,
-        {
-          text:
-            response.data.message ||
-            "Bill uploaded and processed successfully!",
-          sender: "bot",
-        },
+        { text: response.data.message, sender: "bot" },
       ]);
       message.success(`${file.name} uploaded successfully!`);
     } catch (error) {
       message.error("Failed to upload bill. Please try again.");
     } finally {
       setLoading(false);
-      e.target.value = "";
     }
+
+    return false;
   };
 
   const handleManualInput = async (values) => {
@@ -1249,6 +1234,7 @@ export default function ChatWidget() {
     }
 
     setLoading(true);
+
     try {
       const manualInput = {
         periods: [
@@ -1277,6 +1263,7 @@ export default function ChatWidget() {
         `${SERVER_URL}/comparisons/${comparisonId}/manual_inputs`,
         manualInput
       );
+
       await handleCalculateComparison();
       manualForm.resetFields();
     } catch (error) {
@@ -1290,22 +1277,21 @@ export default function ChatWidget() {
     if (!comparisonId) return;
 
     setLoading(true);
+
     try {
       const response = await axios.post(
         `${SERVER_URL}/comparisons/${comparisonId}/calculate`,
-        {
-          pricing_version: "latest",
-        }
+        { pricing_version: "latest" }
       );
 
       setComparisonResults(response.data);
-      setMessages((prev) => [
-        ...prev,
-        {
-          text: "Comparison complete! Here are your potential savings:",
-          sender: "bot",
-        },
-      ]);
+      // setMessages((prev) => [
+      //   ...prev,
+      //   {
+      //     text: "Comparison complete! Here are your potential savings:",
+      //     sender: "bot",
+      //   },
+      // ]);
     } catch (error) {
       message.error("Failed to calculate comparison.");
     } finally {
@@ -1315,11 +1301,18 @@ export default function ChatWidget() {
 
   const handleBookAppointment = async () => {
     if (!fullName || !email || !phone || !postcode || !selectedDate) {
-      message.error("Please fill in all required fields and select a date.");
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "Please fill in all fields and select a date/time.",
+          sender: "bot",
+        },
+      ]);
       return;
     }
 
     setLoading(true);
+
     const preferredDay = selectedDate.format("YYYY-MM-DD");
     const preferredTime =
       isMobile && selectedTime
@@ -1339,17 +1332,14 @@ export default function ChatWidget() {
 
       setMessages((prev) => [
         ...prev,
-        {
-          text: response.data.message || "Appointment booked successfully!",
-          sender: "bot",
-        },
+        { text: response.data.message, sender: "bot" },
       ]);
+
       setShowAppointmentPicker(false);
       resetForm();
     } catch (error) {
       const errMsg =
-        error.response?.data?.detail ||
-        "Failed to book appointment. Please try again.";
+        error.response?.data?.detail || "Failed to book. Please try again.";
       setMessages((prev) => [...prev, { text: errMsg, sender: "bot" }]);
     } finally {
       setLoading(false);
@@ -1365,6 +1355,17 @@ export default function ChatWidget() {
     setSelectedTime(null);
   };
 
+  const handleConfirm = () => {
+    if (isMobile && !selectedTime) {
+      setMessages((prev) => [
+        ...prev,
+        { text: "Please select a time.", sender: "bot" },
+      ]);
+      return;
+    }
+    handleBookAppointment();
+  };
+
   const renderComparisonResults = () => {
     if (!comparisonResults || !comparisonResults.aggregate) return null;
 
@@ -1377,31 +1378,27 @@ export default function ChatWidget() {
             label: "Costs (AUD)",
             data: [
               comparisonResults.aggregate.current_cost?.amount || 0,
-              comparisonResults.aggregate.our_cost?.amount || 0,
+              comparisonResults.aggregate.our_cost.amount,
             ],
             backgroundColor: ["#FF6384", "#36A2EB"],
           },
         ],
       },
-      options: {
-        scales: { y: { beginAtZero: true } },
-        plugins: { legend: { display: true } },
-      },
+      options: { scales: { y: { beginAtZero: true } } },
     };
 
     return (
-      <div className="comparison-results">
-        <h3>
-          Potential Savings: ${comparisonResults.aggregate.savings?.amount || 0}{" "}
+      <div className="io-comparison-results">
+        <h4>
+          Potential Savings: {comparisonResults.aggregate.savings?.amount || 0}{" "}
           AUD ({comparisonResults.aggregate.savings_percentage || 0}%)
-        </h3>
+        </h4>
         <Chart
           type="bar"
           data={chartConfig.data}
           options={chartConfig.options}
         />
-
-        <table style={{ width: "100%", marginTop: "20px" }}>
+        <table>
           <thead>
             <tr>
               <th>Period</th>
@@ -1416,9 +1413,9 @@ export default function ChatWidget() {
                 <td>
                   {p.start_date} to {p.end_date}
                 </td>
-                <td>${p.current_cost?.amount || "N/A"}</td>
-                <td>${p.our_cost?.amount || "N/A"}</td>
-                <td>${p.savings?.amount || "N/A"}</td>
+                <td>{p.current_cost?.amount || "N/A"}</td>
+                <td>{p.our_cost.amount}</td>
+                <td>{p.savings?.amount || "N/A"}</td>
               </tr>
             ))}
           </tbody>
@@ -1428,66 +1425,80 @@ export default function ChatWidget() {
   };
 
   return (
-    <>
+    <div className="io-chat-widget">
       {!isOpen && (
-        <Button
-          className="io-chat-toggle"
-          onClick={handleOpenChat}
-          icon={<PaperClipOutlined />}
-        >
-          How can I help?
-        </Button>
+        <div className="io-chat-button-container" onClick={handleOpenChat}>
+          <button className="io-chat-button">
+            <img src={LOGO_URL} alt="iO" className="io-chat-icon-logo" />
+            <span className="io-chat-text">How can I help?</span>
+          </button>
+        </div>
       )}
 
       {isOpen && (
-        <div className="io-chat-widget">
+        <div className="io-chat-popup">
           <div className="io-chat-header">
-            <div className="io-header-title">iO Energy Assistant</div>
-            <Button
-              type="text"
-              icon={<CloseOutlined />}
+            <div className="io-header-left">
+              <img src={LOGO_URL} alt="iO Energy" className="io-logo" />
+              <span>iO Energy Assistant</span>
+            </div>
+            <CloseOutlined
+              className="io-close"
               onClick={() => setIsOpen(false)}
             />
           </div>
 
-          <Tabs activeKey={activeTab} onChange={setActiveTab}>
+          <Tabs
+            activeKey={activeTab}
+            onChange={setActiveTab}
+            centered
+            className="io-custom-tabs"
+          >
             <Tabs.TabPane tab="Chat" key="chat" />
             <Tabs.TabPane tab="Manual Comparison" key="manual-comparison" />
           </Tabs>
 
-          <div className="io-chat-body">
+          <div className="io-chat-messages">
             {activeTab === "chat" && (
               <>
-                <div className="io-messages">
-                  {messages.map((msg, i) => {
-                    const chartConfig = extractChartConfig(msg.text);
-                    return (
-                      <div key={i} className={`io-message ${msg.sender}`}>
-                        {msg.sender === "bot" && (
-                          <div className="io-bot-avatar" />
-                        )}
-                        <div
-                          className="io-message-content"
-                          dangerouslySetInnerHTML={{
-                            __html: parseMessage(
-                              msg.text.replace(/\{.*\}/s, "")
-                            ),
-                          }}
-                        />
-                        {chartConfig && (
-                          <Chart
-                            type={chartConfig.type}
-                            data={chartConfig.data}
-                            options={chartConfig.options}
+                {messages.map((msg, i) => {
+                  const chartConfig = extractChartConfig(msg.text);
+                  return (
+                    <div key={i} className={`io-message-wrapper ${msg.sender}`}>
+                      {msg.sender === "bot" && (
+                        <div className="io-bot-avatar">
+                          <img
+                            src={LOGO_URL}
+                            alt="iO"
+                            className="io-bot-logo"
                           />
-                        )}
-                      </div>
-                    );
-                  })}
+                        </div>
+                      )}
+                      <div
+                        className={`io-message ${
+                          msg.sender === "user" ? "user" : "bot"
+                        }`}
+                        dangerouslySetInnerHTML={{
+                          __html: parseMessage(msg.text),
+                        }}
+                      />
+                      {chartConfig && (
+                        <Chart
+                          type={chartConfig.type}
+                          data={chartConfig.data}
+                          options={chartConfig.options}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
 
-                  {showAppointmentPicker && (
+                {showAppointmentPicker && (
+                  <div className="io-message-wrapper bot">
+                    <div className="io-bot-avatar">
+                      <img src={LOGO_URL} alt="iO" className="io-bot-logo" />
+                    </div>
                     <div className="io-appointment-form">
-                      <h4>Book a Call Back</h4>
                       <Input
                         placeholder="Full Name"
                         value={fullName}
@@ -1512,122 +1523,194 @@ export default function ChatWidget() {
                         onChange={(e) => setPostcode(e.target.value)}
                         className="io-form-input"
                       />
-
                       {!isMobile ? (
                         <DatePicker
-                          onChange={setSelectedDate}
-                          placeholder="Select preferred date and time"
                           showTime
+                          format="YYYY-MM-DD HH:mm"
+                          placeholder="Preferred Day & Time"
+                          onChange={setSelectedDate}
+                          className="io-form-input io-picker-input"
+                          popupClassName="io-custom-date-picker"
                         />
                       ) : (
                         <>
                           <DatePicker
-                            onChange={setSelectedDate}
+                            format="YYYY-MM-DD"
                             placeholder="Select date"
+                            onChange={setSelectedDate}
+                            className="io-form-input io-picker-input"
+                            popupClassName="io-custom-date-picker"
                           />
                           <TimePicker
-                            onChange={setSelectedTime}
+                            format="HH:mm"
                             placeholder="Select time"
+                            onChange={setSelectedTime}
+                            className="io-form-input io-picker-input"
+                            popupClassName="io-custom-date-picker"
                           />
                         </>
                       )}
-
                       <Button
                         type="primary"
-                        onClick={handleBookAppointment}
-                        loading={loading}
+                        onClick={handleConfirm}
+                        className="io-confirm-btn"
                       >
                         Book Call Back
                       </Button>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {loading && (
-                    <div className="io-message bot">
-                      <Spin />
-                      <span>Thinking...</span>
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
-                </div>
+                {loading && (
+                  <div className="io-loading">
+                    <Spin size="small" />
+                    <span>Thinking...</span>
+                  </div>
+                )}
               </>
             )}
 
             {activeTab === "manual-comparison" && (
-              <div className="io-manual-form">
+              <div className="io-manual-form-container">
                 <Form
                   form={manualForm}
                   onFinish={handleManualInput}
                   layout="vertical"
                 >
-                  <Form.Item name="start_date" rules={[{ required: true }]}>
-                    <DatePicker placeholder="Start Date" />
+                  <Form.Item
+                    name="start_date"
+                    label="Start Date"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker
+                      className="io-manual-input"
+                      popupClassName="io-custom-date-picker"
+                    />
                   </Form.Item>
-                  <Form.Item name="end_date" rules={[{ required: true }]}>
-                    <DatePicker placeholder="End Date" />
+                  <Form.Item
+                    name="end_date"
+                    label="End Date"
+                    rules={[{ required: true }]}
+                  >
+                    <DatePicker
+                      className="io-manual-input"
+                      popupClassName="io-custom-date-picker"
+                    />
                   </Form.Item>
-
                   <Form.Item name="tax_inclusive" valuePropName="checked">
-                    <Checkbox>Tax Inclusive</Checkbox>
+                    <Checkbox className="io-manual-checkbox">
+                      Tax Inclusive
+                    </Checkbox>
                   </Form.Item>
-
                   <Form.Item name="usage_total_kwh" label="Total Usage (kWh)">
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item name="usage_peak_kwh" label="Peak Usage (kWh)">
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="usage_offpeak_kwh"
                     label="Off-Peak Usage (kWh)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="usage_shoulder_kwh"
                     label="Shoulder Usage (kWh)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item name="solar_export_kwh" label="Solar Export (kWh)">
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="controlled_load_kwh"
                     label="Controlled Load (kWh)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
-
                   <Form.Item
                     name="current_supply_daily"
-                    label="Current Daily Supply Charge"
+                    label="Daily Supply Charge ($)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="current_unit_rate_flat"
-                    label="Current Flat Rate"
+                    label="Flat Rate (c/kWh)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
-                  <Form.Item name="current_peak_rate" label="Current Peak Rate">
-                    <InputNumber style={{ width: "100%" }} />
+                  <Form.Item name="current_peak_rate" label="Peak Rate (c/kWh)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="current_offpeak_rate"
-                    label="Current Off-Peak Rate"
+                    label="Off-Peak Rate (c/kWh)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="current_shoulder_rate"
-                    label="Current Shoulder Rate"
+                    label="Shoulder Rate (c/kWh)"
                   >
-                    <InputNumber style={{ width: "100%" }} />
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                      style={{ width: "100%" }}
+                    />
                   </Form.Item>
-
-                  <Button type="primary" htmlType="submit" loading={loading}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={loading}
+                    block
+                  >
                     Calculate Savings
                   </Button>
                 </Form>
@@ -1635,6 +1718,8 @@ export default function ChatWidget() {
                 {comparisonResults && renderComparisonResults()}
               </div>
             )}
+
+            <div ref={messagesEndRef} />
           </div>
 
           {activeTab === "chat" && !showAppointmentPicker && (
@@ -1643,8 +1728,13 @@ export default function ChatWidget() {
                 type="file"
                 ref={fileInputRef}
                 style={{ display: "none" }}
-                onChange={handleUploadBill}
                 accept=".pdf,.jpg,.jpeg,.png"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) {
+                    handleUploadBill(e.target.files[0]);
+                    e.target.value = "";
+                  }
+                }}
               />
               <Button
                 icon={<PaperClipOutlined />}
@@ -1654,6 +1744,7 @@ export default function ChatWidget() {
                 title="Upload bill"
               />
               <Input.TextArea
+                placeholder="Ask about solar, plans, or savings..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onPressEnter={(e) => {
@@ -1665,18 +1756,17 @@ export default function ChatWidget() {
                 disabled={loading}
                 autoSize={{ minRows: 1, maxRows: 4 }}
                 className="io-chat-textarea"
-                placeholder="Type your message..."
               />
               <Button
                 icon={<SendOutlined />}
                 className="io-send-btn"
-                onClick={handleSend}
+                onClick={() => handleSend()}
                 disabled={loading || !input.trim()}
               />
             </div>
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }
