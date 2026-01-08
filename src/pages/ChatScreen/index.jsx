@@ -699,7 +699,7 @@ export default function ChatWidget() {
                 type="file"
                 ref={fileInputRef}
                 style={{ display: "none" }}
-                accept=".pdf,.jpg,.jpeg,.png"
+                accept=".pdf"
                 onChange={(e) => {
                   if (e.target.files?.[0]) {
                     handleUploadBill(e.target.files[0]);
