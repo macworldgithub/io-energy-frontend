@@ -1285,13 +1285,6 @@ export default function ChatWidget() {
       );
 
       setComparisonResults(response.data);
-      // setMessages((prev) => [
-      //   ...prev,
-      //   {
-      //     text: "Comparison complete! Here are your potential savings:",
-      //     sender: "bot",
-      //   },
-      // ]);
     } catch (error) {
       message.error("Failed to calculate comparison.");
     } finally {
