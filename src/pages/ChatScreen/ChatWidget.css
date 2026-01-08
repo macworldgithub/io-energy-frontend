@@ -18,29 +18,21 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: block;
-  position: relative; /* Important for Chart.js responsiveness */
-  height: 300px; /* Fixed height for consistent chart area; adjust as needed */
+  /* left align chart and reduce size */
+  /* margin-left: 40px; */
   margin-top: 8px;
+  width: 70%;
+  max-width: 320px;
 }
 
-/* On larger screens (tablets and desktops), limit width and center */
-@media (min-width: 768px) {
-  .io-chart-container {
-    width: 70%;
-    max-width: 520px; /* Slightly larger than your original 320px for better desktop view */
-    margin-left: auto;
-    margin-right: auto;
-    height: 400px; /* Taller on bigger screens for better proportion */
-  }
-}
-
-/* Ensure canvas fills the container properly */
+/* Ensure canvas is responsive */
 .io-chart-container canvas {
   width: 100% !important;
-  height: 100% !important; /* Fill the container height */
+  height: auto !important;
+  /* reduced max-height for smaller chart display */
+  max-height: 240px;
 }
 
-/* Title styling remains the same */
 .io-chart-container > div:first-child {
   text-align: center;
   margin-bottom: 12px;
