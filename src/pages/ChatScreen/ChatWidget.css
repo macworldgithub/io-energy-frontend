@@ -39,8 +39,8 @@
 }
 @media (max-width: 768px) {
   .io-chart-container {
-  width:70%;
-    max-width: none;      /* Remove max-width limit */
+    width: 90%;           /* Make it wider on mobile */
+    max-width: 100%;      /* Remove max-width limit */
     margin-left: auto;
     margin-right: auto;
   }
