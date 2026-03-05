@@ -79,12 +79,13 @@
   }
 }
 /* Appointment picker placeholders — make them white */
+/* Appointment picker placeholders — toned-down placeholder color */
 .io-appointment-form .ant-picker-input > input::placeholder,
 .io-appointment-form .ant-picker .ant-picker-input > input::placeholder,
 .io-appointment-form .ant-time-picker .ant-picker-input > input::placeholder,
 .io-appointment-form .io-picker-input .ant-picker-input > input::placeholder {
-  color: #ffffff !important;
-  opacity: 1 !important;
+  color: #bdbdbd !important; /* softer placeholder grey */
+  opacity: 0.85 !important;
 }
 .io-chart-container > div:first-child {
   text-align: center;

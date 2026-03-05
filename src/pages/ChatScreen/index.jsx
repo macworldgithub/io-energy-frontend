@@ -2293,100 +2293,100 @@
 //                       step={0.1}
 //                     />
 //                   </Form.Item>
-//                   <Form.Item name="usage_peak_kwh" label="Peak Usage (kWh)">
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.1}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="usage_offpeak_kwh"
-//                     label="Off-peak Usage (kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.1}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="usage_shoulder_kwh"
-//                     label="Shoulder Usage (kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.1}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item name="solar_export_kwh" label="Solar Export (kWh)">
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.1}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="controlled_load_kwh"
-//                     label="Controlled Load (kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.1}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="current_supply_daily"
-//                     label="Current Supply Daily (AUD)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.01}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="current_unit_rate_flat"
-//                     label="Current Unit Rate (AUD/kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.01}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="current_peak_rate"
-//                     label="Current Peak Rate (AUD/kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.01}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="current_offpeak_rate"
-//                     label="Current Off-peak Rate (AUD/kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.01}
-//                     />
-//                   </Form.Item>
-//                   <Form.Item
-//                     name="current_shoulder_rate"
-//                     label="Current Shoulder Rate (AUD/kWh)"
-//                   >
-//                     <InputNumber
-//                       className="io-manual-input"
-//                       min={0}
-//                       step={0.01}
-//                     />
-//                   </Form.Item>
+                  // <Form.Item name="usage_peak_kwh" label="Peak Usage (kWh)">
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.1}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="usage_offpeak_kwh"
+                  //   label="Off-peak Usage (kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.1}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="usage_shoulder_kwh"
+                  //   label="Shoulder Usage (kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.1}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item name="solar_export_kwh" label="Solar Export (kWh)">
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.1}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="controlled_load_kwh"
+                  //   label="Controlled Load (kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.1}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="current_supply_daily"
+                  //   label="Current Supply Daily (AUD)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.01}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="current_unit_rate_flat"
+                  //   label="Current Unit Rate (AUD/kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.01}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="current_peak_rate"
+                  //   label="Current Peak Rate (AUD/kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.01}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="current_offpeak_rate"
+                  //   label="Current Off-peak Rate (AUD/kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.01}
+                  //   />
+                  // </Form.Item>
+                  // <Form.Item
+                  //   name="current_shoulder_rate"
+                  //   label="Current Shoulder Rate (AUD/kWh)"
+                  // >
+                  //   <InputNumber
+                  //     className="io-manual-input"
+                  //     min={0}
+                  //     step={0.01}
+                  //   />
+                  // </Form.Item>
 //                   <Form.Item>
 //                     <Button
 //                       type="primary"
@@ -3166,7 +3166,100 @@ export default function ChatWidget() {
                       step={0.1}
                     />
                   </Form.Item>
-                  {/* ... rest of the manual form fields remain unchanged ... */}
+                  <Form.Item name="usage_peak_kwh" label="Peak Usage (kWh)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="usage_offpeak_kwh"
+                    label="Off-peak Usage (kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="usage_shoulder_kwh"
+                    label="Shoulder Usage (kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item name="solar_export_kwh" label="Solar Export (kWh)">
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="controlled_load_kwh"
+                    label="Controlled Load (kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.1}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="current_supply_daily"
+                    label="Current Supply Daily (AUD)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="current_unit_rate_flat"
+                    label="Current Unit Rate (AUD/kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="current_peak_rate"
+                    label="Current Peak Rate (AUD/kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="current_offpeak_rate"
+                    label="Current Off-peak Rate (AUD/kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="current_shoulder_rate"
+                    label="Current Shoulder Rate (AUD/kWh)"
+                  >
+                    <InputNumber
+                      className="io-manual-input"
+                      min={0}
+                      step={0.01}
+                    />
+                  </Form.Item>
                   <Form.Item>
                     <Button
                       type="primary"
