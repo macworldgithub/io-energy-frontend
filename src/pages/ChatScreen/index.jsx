@@ -2980,7 +2980,7 @@ export default function ChatWidget() {
                       )}
 
                       {/* Chart (if exists) */}
-                      {config && (
+                      {/* {config && (
                         <div className="io-chart-container">
                           <div
                             style={{
@@ -3023,8 +3023,64 @@ export default function ChatWidget() {
                             }}
                           />
                         </div>
-                      )}
-
+                      )} */}
+  {/* Chart (if exists) */}
+{config && (
+  <div className="io-chart-container">
+    <div
+      style={{
+        textAlign: "center",
+        marginBottom: "12px",
+        color: "#FF6BA3",
+        fontWeight: "600",
+      }}
+    >
+      Cost Comparison (AUD)
+    </div>
+    <Chart
+      type={config.type}
+      data={config.data}
+      options={{
+        ...config.options,
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 10,
+            top: 10,
+            bottom: 35   // ← extra space so x-axis labels are always visible
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: "#FFFFFF" },
+          },
+          tooltip: {
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            titleColor: "#FF127F",
+            bodyColor: "#FFFFFF",
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: "#CCCCCC" },
+            grid: { color: "rgba(255, 255, 255, 0.1)" },
+          },
+          x: {
+            ticks: {
+              color: "#CCCCCC",
+              padding: 12,
+              font: { size: 12 }
+            },
+            grid: { color: "rgba(255, 255, 255, 0.1)" },
+          },
+        },
+      }}
+    />
+  </div>
+)}
                       {/* Text AFTER chart */}
                       {after && (
                         <div
