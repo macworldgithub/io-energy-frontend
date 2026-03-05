@@ -3799,17 +3799,23 @@ export default function ChatWidget() {
                       >
                         <div dangerouslySetInnerHTML={{ __html: parseMessage(preText) }} />
                         {chartConfig && (
-                          <div className="io-chart-container">
-                            <div
-                              style={{
-                                textAlign: "center",
-                                marginBottom: "12px",
-                                color: "#FF6BA3",
-                                fontWeight: "600",
-                              }}
-                            >
-                              Cost Comparison (AUD)
-                            </div>
+                          <div 
+    className="io-chart-container" 
+    style={{ 
+      minWidth: "480px",   // ← This is the fix
+      width: "100%" 
+    }}
+  >
+    <div
+      style={{
+        textAlign: "center",
+        marginBottom: "12px",
+        color: "#FF6BA3",
+        fontWeight: "600",
+      }}
+    >
+      Cost Comparison (AUD)
+    </div>
                             <Chart
                               type={chartConfig.type}
                               data={chartConfig.data}
