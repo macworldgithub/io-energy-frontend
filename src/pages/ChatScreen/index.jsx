@@ -1612,8 +1612,6 @@
 //     </div>
 //   );
 // }
-
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -1633,6 +1631,8 @@ import {
   SendOutlined,
   CloseOutlined,
   PaperClipOutlined,
+  ExpandOutlined,
+  CompressOutlined,
 } from "@ant-design/icons";
 import { SERVER_URL } from "../../config";
 import axios from "axios";
@@ -1658,7 +1658,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  BarController
+  BarController,
 );
 
 const LOGO_URL =
@@ -1666,6 +1666,7 @@ const LOGO_URL =
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -1812,13 +1813,16 @@ export default function ChatWidget() {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
 
-      setMessages((prev) => [
-        ...prev,
-        { text: response.data.message, sender: "bot" },
-      ]);
+      let botMessage = { text: response.data.message, sender: "bot" };
+      if (response.data.message === "Bill uploaded and parsed successfully. Now ask me to compare it or provide more details. Data handled per privacy policy.") {
+        botMessage.text = "Bill uploaded and parsed successfully. Now press the compare button. Data handled per privacy policy.";
+        botMessage.showCompareButton = true;
+      }
+
+      setMessages((prev) => [...prev, botMessage]);
       message.success(`${file.name} uploaded successfully!`);
     } catch (error) {
       message.error("Failed to upload bill. Please try again.");
@@ -1863,7 +1867,7 @@ export default function ChatWidget() {
 
       await axios.post(
         `${SERVER_URL}/comparisons/${comparisonId}/manual_inputs`,
-        manualInput
+        manualInput,
       );
 
       await handleCalculateComparison();
@@ -1885,7 +1889,7 @@ export default function ChatWidget() {
         `${SERVER_URL}/comparisons/${comparisonId}/calculate`,
         {
           pricing_version: "latest",
-        }
+        },
       );
 
       setComparisonResults(response.data);
@@ -2037,7 +2041,9 @@ export default function ChatWidget() {
       )}
 
       {isOpen && (
-        <div className="io-chat-popup">
+        <div
+          className={`io-chat-popup ${isFullscreen ? "io-fullscreen-mode" : ""}`}
+        >
           <div className="io-chat-header">
             <div className="io-header-left">
               <img
@@ -2047,10 +2053,28 @@ export default function ChatWidget() {
               />
               <span>iO Energy Assistant</span>
             </div>
-            <CloseOutlined
-              className="io-close"
-              onClick={() => setIsOpen(false)}
-            />
+            <div className="io-header-controls">
+              {isFullscreen ? (
+                <CompressOutlined
+                  className="io-maximize-btn"
+                  onClick={() => setIsFullscreen(false)}
+                  title="Exit fullscreen"
+                />
+              ) : (
+                <ExpandOutlined
+                  className="io-maximize-btn"
+                  onClick={() => setIsFullscreen(true)}
+                  title="Fullscreen"
+                />
+              )}
+              <CloseOutlined
+                className="io-close"
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsFullscreen(false);
+                }}
+              />
+            </div>
           </div>
 
           <Tabs
@@ -2092,6 +2116,15 @@ export default function ChatWidget() {
                           __html: parseMessage(displayText),
                         }}
                       />
+                      {msg.showCompareButton && msg.sender === "bot" && (
+                        <Button
+                          type="primary"
+                          onClick={() => handleSend("compare")}
+                          className="io-compare-btn"
+                        >
+                          Compare
+                        </Button>
+                      )}
                       {chartConfig && (
                         <div className="io-chart-container">
                           <div
@@ -2135,11 +2168,6 @@ export default function ChatWidget() {
                             }}
                           />
                         </div>
-                      )}
-                      {msg.sender === "bot" && msg.text === "Bill uploaded and parsed successfully. Now ask me to compare it or provide more details. Data handled per privacy policy." && (
-                        <Button type="primary" onClick={() => handleSend("compare")} className="io-compare-btn">
-                          Compare
-                        </Button>
                       )}
                     </div>
                   );
