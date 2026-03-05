@@ -7,7 +7,7 @@
   font-family: "Inter", "Roboto", sans-serif;
 }
 
-.io-chart-container {
+/* .io-chart-container {
   margin: 20px 8px 8px 8px;
   width: calc(100% - 16px);
   max-width: 100%;
@@ -18,21 +18,59 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: block;
-  /* left align chart and reduce size */
-  /* margin-left: 40px; */
+  
   margin-top: 8px;
   width: 70%;
   max-width: 320px;
+}
+
+.io-chart-container canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 240px;
+} */
+.io-chart-container {
+  margin: 20px 8px 8px 8px;
+  width: 70%;
+  max-width: 320px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 18, 127, 0.3);
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: block;
 }
 
 /* Ensure canvas is responsive */
 .io-chart-container canvas {
   width: 100% !important;
   height: auto !important;
-  /* reduced max-height for smaller chart display */
   max-height: 240px;
 }
+@media (max-width: 768px) {
+  .io-chart-container {
+    width: 95% !important;
+    max-width: none !important;
+    margin: 16px auto !important;
+    padding: 14px;
+  }
 
+  .io-chart-container canvas {
+    max-height: 340px !important;   /* ← increased height for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .io-chart-container {
+    width: 98% !important;
+    padding: 12px;
+  }
+
+  .io-chart-container canvas {
+    max-height: 300px !important;   /* slightly smaller than tablet but still taller than desktop */
+  }
+}
 .io-chart-container > div:first-child {
   text-align: center;
   margin-bottom: 12px;
