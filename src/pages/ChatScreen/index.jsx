@@ -2998,7 +2998,7 @@ export default function ChatWidget() {
                             options={{
                               ...config.options,
                               responsive: true,
-                              maintainAspectRatio: true,
+                              maintainAspectRatio: false,
                               plugins: {
                                 legend: {
                                   labels: { color: "#FFFFFF" },
