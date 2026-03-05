@@ -3799,7 +3799,7 @@ export default function ChatWidget() {
                       >
                         <div dangerouslySetInnerHTML={{ __html: parseMessage(preText) }} />
                         {chartConfig && (
-                          <div 
+  <div 
     className="io-chart-container" 
     style={{ 
       minWidth: "480px",   // ← This is the fix
@@ -3816,41 +3816,41 @@ export default function ChatWidget() {
     >
       Cost Comparison (AUD)
     </div>
-                            <Chart
-                              type={chartConfig.type}
-                              data={chartConfig.data}
-                              options={{
-                                ...chartConfig.options,
-                                scales: {
-                                  y: {
-                                    ...chartConfig.options.scales?.y,
-                                    beginAtZero: true,
-                                    ticks: { color: "#CCCCCC" },
-                                    grid: { color: "rgba(255, 255, 255, 0.1)" },
-                                  },
-                                  x: {
-                                    ...chartConfig.options.scales?.x,
-                                    ticks: { color: "#CCCCCC", maxRotation: 0, minRotation: 0 },
-                                    grid: { color: "rgba(255, 255, 255, 0.1)" },
-                                  },
-                                },
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                  legend: {
-                                    labels: { color: "#FFFFFF" },
-                                  },
-                                  tooltip: {
-                                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                                    titleColor: "#FF127F",
-                                    bodyColor: "#FFFFFF",
-                                  },
-                                },
-                              }}
-                              style={{ height: '250px', width: '100%' }}
-                            />
-                          </div>
-                        )}
+    <Chart
+      type={chartConfig.type}
+      data={chartConfig.data}
+      options={{
+        ...chartConfig.options,
+        scales: {
+          y: {
+            ...chartConfig.options.scales?.y,
+            beginAtZero: true,
+            ticks: { color: "#CCCCCC" },
+            grid: { color: "rgba(255, 255, 255, 0.1)" },
+          },
+          x: {
+            ...chartConfig.options.scales?.x,
+            ticks: { color: "#CCCCCC", maxRotation: 0, minRotation: 0 },
+            grid: { color: "rgba(255, 255, 255, 0.1)" },
+          },
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: "#FFFFFF" },
+          },
+          tooltip: {
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            titleColor: "#FF127F",
+            bodyColor: "#FFFFFF",
+          },
+        },
+      }}
+      style={{ height: '250px', width: '100%' }}
+    />
+  </div>
+)}
                         {postText && <div dangerouslySetInnerHTML={{ __html: parseMessage(postText) }} />}
                       </div>
                       {msg.showCompareButton && msg.sender === "bot" && (
