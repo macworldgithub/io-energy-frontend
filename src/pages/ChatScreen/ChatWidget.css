@@ -973,27 +973,3 @@
     padding: 8px 4px;
   }
 }
-/* Compare Button - after bill upload */
-.io-compare-btn {
-  background: linear-gradient(135deg, #ff127f, #e00b6f) !important;
-  border: none !important;
-  color: #ffffff !important;
-  border-radius: 8px !important;
-  height: 42px !important;
-  font-weight: 600 !important;
-  font-size: 15px !important;
-  margin-top: 12px;
-  width: 100% !important;
-  box-shadow: 0 4px 12px rgba(255, 18, 127, 0.4) !important;
-  transition: all 0.3s ease !important;
-}
-
-.io-compare-btn:hover {
-  background: linear-gradient(135deg, #e00b6f, #c00a5f) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 18, 127, 0.5) !important;
-}
-
-.io-compare-btn:active {
-  transform: translateY(0);
-}
