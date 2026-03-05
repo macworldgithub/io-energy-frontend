@@ -29,6 +29,11 @@
   height: auto !important;
   max-height: 240px;
 } */
+/* ──────────────────────────────────────────────────────────────
+   UPDATED CHART STYLING – Taller on Desktop + Mobile
+   (Desktop/laptop when fullscreen is OFF)
+   ────────────────────────────────────────────────────────────── */
+
 .io-chart-container {
   margin: 20px 8px 8px 8px;
   width: 70%;
@@ -42,12 +47,14 @@
   display: block;
 }
 
-/* Ensure canvas is responsive */
+/* Desktop / Laptop (fullscreen OFF) */
 .io-chart-container canvas {
   width: 100% !important;
   height: auto !important;
-  max-height: 240px;
+  max-height: 380px !important;   /* ← Increased for desktop/laptop */
 }
+
+/* ────── MOBILE: Even taller charts ────── */
 @media (max-width: 768px) {
   .io-chart-container {
     width: 95% !important;
@@ -57,7 +64,7 @@
   }
 
   .io-chart-container canvas {
-    max-height: 340px !important;   /* ← increased height for small screens */
+    max-height: 420px !important;   /* taller on tablets/phones */
   }
 }
 
@@ -68,8 +75,16 @@
   }
 
   .io-chart-container canvas {
-    max-height: 300px !important;   /* slightly smaller than tablet but still taller than desktop */
+    max-height: 360px !important;
   }
+}
+/* Appointment picker placeholders — make them white */
+.io-appointment-form .ant-picker-input > input::placeholder,
+.io-appointment-form .ant-picker .ant-picker-input > input::placeholder,
+.io-appointment-form .ant-time-picker .ant-picker-input > input::placeholder,
+.io-appointment-form .io-picker-input .ant-picker-input > input::placeholder {
+  color: #ffffff !important;
+  opacity: 1 !important;
 }
 .io-chart-container > div:first-child {
   text-align: center;
