@@ -2552,8 +2552,9 @@ export default function ChatWidget() {
     if (match) {
       try {
         const config = JSON.parse(match[1].trim());
-        const cleanedText = text.replace(chartBlockRegex, "").trim();
-        return { config, cleanedText };
+        const preText = text.substring(0, match.index).trim();
+        const postText = text.substring(match.index + match[0].length).trim();
+        return { preText, config, postText };
       } catch (e) {
         console.error("Failed to parse chart config:", e);
         return null;
@@ -2924,9 +2925,8 @@ export default function ChatWidget() {
               <>
                 {messages.map((msg, i) => {
                   const chartData = extractChartConfig(msg.text);
-                  const displayText = chartData
-                    ? chartData.cleanedText
-                    : msg.text;
+                  const preText = chartData ? chartData.preText : msg.text;
+                  const postText = chartData ? chartData.postText : '';
                   const chartConfig = chartData ? chartData.config : null;
 
                   return (
@@ -2944,10 +2944,54 @@ export default function ChatWidget() {
                         className={`io-message ${
                           msg.sender === "user" ? "user" : "bot"
                         }`}
-                        dangerouslySetInnerHTML={{
-                          __html: parseMessage(displayText),
-                        }}
-                      />
+                      >
+                        <div dangerouslySetInnerHTML={{ __html: parseMessage(preText) }} />
+                        {chartConfig && (
+                          <div className="io-chart-container">
+                            <div
+                              style={{
+                                textAlign: "center",
+                                marginBottom: "12px",
+                                color: "#FF6BA3",
+                                fontWeight: "600",
+                              }}
+                            >
+                              Cost Comparison (AUD)
+                            </div>
+                            <Chart
+                              type={chartConfig.type}
+                              data={chartConfig.data}
+                              options={{
+                                ...chartConfig.options,
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                plugins: {
+                                  legend: {
+                                    labels: { color: "#FFFFFF" },
+                                  },
+                                  tooltip: {
+                                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                                    titleColor: "#FF127F",
+                                    bodyColor: "#FFFFFF",
+                                  },
+                                },
+                                scales: {
+                                  y: {
+                                    beginAtZero: true,
+                                    ticks: { color: "#CCCCCC" },
+                                    grid: { color: "rgba(255, 255, 255, 0.1)" },
+                                  },
+                                  x: {
+                                    ticks: { color: "#CCCCCC" },
+                                    grid: { color: "rgba(255, 255, 255, 0.1)" },
+                                  },
+                                },
+                              }}
+                            />
+                          </div>
+                        )}
+                        {postText && <div dangerouslySetInnerHTML={{ __html: parseMessage(postText) }} />}
+                      </div>
                       {msg.showCompareButton && msg.sender === "bot" && (
                         <Button
                           type="primary"
@@ -2956,50 +3000,6 @@ export default function ChatWidget() {
                         >
                           Compare
                         </Button>
-                      )}
-                      {chartConfig && (
-                        <div className="io-chart-container">
-                          <div
-                            style={{
-                              textAlign: "center",
-                              marginBottom: "12px",
-                              color: "#FF6BA3",
-                              fontWeight: "600",
-                            }}
-                          >
-                            Cost Comparison (AUD)
-                          </div>
-                          <Chart
-                            type={chartConfig.type}
-                            data={chartConfig.data}
-                            options={{
-                              ...chartConfig.options,
-                              responsive: true,
-                              maintainAspectRatio: true,
-                              plugins: {
-                                legend: {
-                                  labels: { color: "#FFFFFF" },
-                                },
-                                tooltip: {
-                                  backgroundColor: "rgba(0, 0, 0, 0.8)",
-                                  titleColor: "#FF127F",
-                                  bodyColor: "#FFFFFF",
-                                },
-                              },
-                              scales: {
-                                y: {
-                                  beginAtZero: true,
-                                  ticks: { color: "#CCCCCC" },
-                                  grid: { color: "rgba(255, 255, 255, 0.1)" },
-                                },
-                                x: {
-                                  ticks: { color: "#CCCCCC" },
-                                  grid: { color: "rgba(255, 255, 255, 0.1)" },
-                                },
-                              },
-                            }}
-                          />
-                        </div>
                       )}
                     </div>
                   );
