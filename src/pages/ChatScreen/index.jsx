@@ -3802,7 +3802,7 @@ export default function ChatWidget() {
   <div 
     className="io-chart-container" 
     style={{ 
-      minWidth: "240px",   // ← This is the fix
+      minWidth: "125px",   // ← This is the fix
       width: "100%" 
     }}
   >
