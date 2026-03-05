@@ -34,13 +34,14 @@
    (Desktop/laptop when fullscreen is OFF)
    ────────────────────────────────────────────────────────────── */
 /* ──────────────────────────────────────────────────────────────
-   UPDATED CHART STYLING – Tall & Wide on Desktop + Mobile
+   UPDATED CHART STYLING – Perfect height on Desktop + Mobile
+   (No longer too tall)
    ────────────────────────────────────────────────────────────── */
 
 .io-chart-container {
   margin: 20px auto 12px auto;
   width: 92%;
-  max-width: none;
+  height: 300px;                    /* ← Balanced height for desktop popup */
   background: #1a1a1a;
   border-radius: 12px;
   border: 1px solid rgba(255, 18, 127, 0.3);
@@ -50,31 +51,26 @@
   display: block;
 }
 
-/* Desktop / Laptop (normal popup - fullscreen OFF) */
+/* Desktop / Laptop (normal popup) */
 .io-chart-container canvas {
   width: 100% !important;
-  height: 420px !important;           /* ← Tall on desktop */
-  max-height: none !important;
+  height: 100% !important;
 }
 
-/* ────── MOBILE: Even taller ────── */
+/* ────── MOBILE: Slightly smaller but still clear ────── */
 @media (max-width: 768px) {
   .io-chart-container {
     width: 96% !important;
+    height: 280px !important;
     padding: 16px;
-  }
-  .io-chart-container canvas {
-    height: 460px !important;
   }
 }
 
 @media (max-width: 480px) {
   .io-chart-container {
     width: 98% !important;
+    height: 260px !important;
     padding: 14px;
-  }
-  .io-chart-container canvas {
-    height: 400px !important;
   }
 }
 /* Appointment picker placeholders — make them white */
