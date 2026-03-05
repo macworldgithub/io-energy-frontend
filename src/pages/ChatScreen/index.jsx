@@ -3662,9 +3662,8 @@ export default function ChatWidget() {
         ],
       },
       options: { 
-        indexAxis: 'y',
         scales: { 
-          x: { beginAtZero: true } 
+          y: { beginAtZero: true } 
         } 
       },
     };
@@ -3816,16 +3815,16 @@ export default function ChatWidget() {
                               data={chartConfig.data}
                               options={{
                                 ...chartConfig.options,
-                                indexAxis: 'y',
                                 scales: {
-                                  x: {
-                                    ...(chartConfig.options.scales?.y || {}),
+                                  y: {
+                                    ...chartConfig.options.scales?.y,
+                                    beginAtZero: true,
                                     ticks: { color: "#CCCCCC" },
                                     grid: { color: "rgba(255, 255, 255, 0.1)" },
                                   },
-                                  y: {
-                                    ...(chartConfig.options.scales?.x || {}),
-                                    ticks: { color: "#CCCCCC" },
+                                  x: {
+                                    ...chartConfig.options.scales?.x,
+                                    ticks: { color: "#CCCCCC", maxRotation: 0, minRotation: 0 },
                                     grid: { color: "rgba(255, 255, 255, 0.1)" },
                                   },
                                 },
@@ -3842,7 +3841,7 @@ export default function ChatWidget() {
                                   },
                                 },
                               }}
-                              style={{ height: '150px', width: '100%' }}
+                              style={{ height: '250px', width: '100%' }}
                             />
                           </div>
                         )}
